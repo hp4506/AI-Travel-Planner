@@ -67,3 +67,9 @@ firebase-debug.log
 # OS files
 Thumbs.db
 .DS_Store
+
+# Test files
+test-*.js
+test-*.mjs
+verify-*.js
+*.test.js
