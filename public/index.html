@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VagaWise - AI Logic Trip Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase Client SDKs -->
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="auth.js"></script>
+</head>
+<body>
+    <div class="bg-atmosphere">
+        <div class="sphere sphere-1"></div>
+        <div class="sphere sphere-2"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-route"></i>
+            VagaWise<span>.</span>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="#" class="nav-item active"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="#" class="nav-item"><i class="fas fa-plus"></i> New Plan</a>
+            <a href="#" class="nav-item"><i class="fas fa-bookmark"></i> Saved Routes</a>
+            <a href="#" class="nav-item"><i class="fas fa-cog"></i> Account Settings</a>
+        </nav>
+
+        <div style="margin-top: auto;">
+            <a href="#" class="nav-item"><i class="fas fa-headset"></i> AI Support</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-area">
+        <header class="top-header">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Where to? or provide a logic query">
+            </div>
+
+            <div class="user-profile">
+                <!-- Auth Nav (Initially shown) -->
+                <div id="auth-nav">
+                    <button id="navLoginBtn" class="logout-btn" style="margin-right: 0.5rem;">Log In</button>
+                    <button id="navSignupBtn" class="cta-button" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; box-shadow: none; width: auto; margin: 0;">Sign Up</button>
+                </div>
+                <!-- User Nav (Initially hidden) -->
+                <div id="user-nav" style="display: none; align-items: center; gap: 1rem;">
+                    <span id="userEmailDisplay" class="user-email"></span>
+                    <button id="navLogoutBtn" class="logout-btn">Log Out</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Auth Modal -->
+        <div id="authModal" class="modal">
+            <div class="glass-panel">
+                <h2 id="authModalTitle">Sign In</h2>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="authEmail" class="input-field" placeholder="you@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" class="input-field" placeholder="••••••••" required>
+                </div>
+                <button id="authSubmitBtn" class="cta-button">Sign In</button>
+                <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+                    <span id="authSwitchText">Don't have an account?</span> 
+                    <a href="#" id="authSwitchLink" style="color: var(--primary); text-decoration: none; font-weight: 600;">Sign Up</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Content -->
+        <main id="mainAppContent" style="display: none;">
+            <div class="dashboard-content">
+                <!-- Card 1: Destinations -->
+                <div class="card">
+                    <h3 class="card-title"><span>(1)</span> Select Destinations</h3>
+                    <div class="search-bar" style="max-width: none;">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="destinations" placeholder="Search...">
+                    </div>
+                    <div class="tags-container" id="quick-tags">
+                        <span class="tag">Paris</span>
+                        <span class="tag">Bali</span>
+                        <span class="tag">Bag</span>
+                        <span class="tag">Ab...</span>
+                    </div>
+                    <div class="suggestion-previews">
+                        <div class="suggestion-preview"><img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=200&q=80" alt="Paris"></div>
+                        <div class="suggestion-preview"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=200&q=80" alt="Bali"></div>
+                        <div class="suggestion-preview"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=200&q=80" alt="Madrid"></div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Budget -->
+                <div class="card">
+                    <h3 class="card-title"><span>(2)</span> Your Budget</h3>
+                    <div class="range-container">
+                        <div class="range-header">
+                            <span>INR</span>
+                            <span id="budgetValue">50000</span>
+                        </div>
+                        <input type="range" id="budgetRange" min="10000" max="500000" step="5000" value="50000">
+                        <input type="hidden" id="budget" value="50000">
+                    </div>
+                    <div class="input-group">
+                        <label>Currency</label>
+                        <select id="currencySelect" class="input-field">
+                            <option value="INR">INR</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+                    </div>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                        <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Currency Conversion (Live Rate)</p>
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; align-items: center;">
+                            <div>
+                                <p style="font-size: 0.8rem; color: var(--text-muted);">INR</p>
+                                <p id="inrValueDisplay" style="font-size: 1.2rem; font-weight: 700;">50000</p>
+                            </div>
+                            <i class="fas fa-exchange-alt" style="color: var(--text-muted);"></i>
+                            <div>
+                                <p id="targetCurrencyLabel" style="font-size: 0.8rem; color: var(--text-muted);">EUR</p>
+                                <p style="font-size: 1.2rem; font-weight: 700; color: var(--accent);"><span id="targetCurrencySymbol">€</span><span id="eurValueDisplay">0.00</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Select Dates -->
+                <div class="card">
+                    <h3 class="card-title"><span>(3)</span> Select Dates</h3>
+                    <div class="input-group">
+                        <label>Start Date</label>
+                        <input type="date" id="startDate" class="input-field">
+                    </div>
+                    <div class="input-group">
+                        <label>End Date</label>
+                        <input type="date" id="endDate" class="input-field">
+                    </div>
+                    <div id="durationDisplay" style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--accent); font-weight: 600;">
+                        Duration: 0 days
+                    </div>
+                    <input type="hidden" id="days" value="0">
+                </div>
+
+                <!-- Card 4: Location -->
+                <div class="card">
+                    <h3 class="card-title"><span>(4)</span> Set Current Location</h3>
+                    <div class="input-group" style="position: relative;">
+                        <input type="text" id="currentLocation" class="input-field" placeholder="e.g. Mumbai, India">
+                        <button id="getLocationBtn" style="position: absolute; right: 10px; top: 10px; background: transparent; border: none; color: var(--primary); cursor: pointer;"><i class="fas fa-location-crosshairs"></i></button>
+                    </div>
+                </div>
+
+                <!-- Card 5: Trip Type -->
+                <div class="card">
+                    <h3 class="card-title"><span>(5)</span> Select Trip Type</h3>
+                    <div class="tags-container" style="gap: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="tripType" value="false" checked> Domestic
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="tripType" value="true"> International
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="tripType" value="multi"> Multi-city
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-area">
+                <button id="analyzeButton" class="cta-button">
+                    Craft & Plan Your optimized Itinerary with AI Logic 🌍
+                </button>
+            </div>
+
+            <!-- Results Sections -->
+            <section id="analysis-section" class="card" style="display: none; margin: 2.5rem; max-width: 1400px;">
+                <h2 id="analysis-title">Budget Analysis</h2>
+                <p id="analysis-message" style="margin: 1rem 0; color: var(--text-muted);"></p>
+                <div id="breakdown-container"></div>
+                <div id="suggestion-container" style="display: none; margin-top: 1.5rem;">
+                    <h3>Suggestions:</h3>
+                    <ul id="suggestion-list" style="margin-left: 1.5rem; margin-top: 0.5rem;"></ul>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button id="generateButton" class="cta-button" style="display: none; flex: 1;">Continue with AI Planning</button>
+                    <button id="restartButton" class="logout-btn" style="flex: 1;">Start Over</button>
+                </div>
+            </section>
+
+            <section id="itinerary-section" style="display: none; padding: 2.5rem;"></section>
+
+            <div id="loading" class="loading-spinner"></div>
+        </main>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
