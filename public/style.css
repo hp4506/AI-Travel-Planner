@@ -305,6 +305,37 @@ body {
 .range-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.budget-input-manual {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-align: right;
+    width: 120px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.budget-input-manual:focus {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.budget-input-manual::-webkit-inner-spin-button,
+.budget-input-manual::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.range-header-old {
+    display: flex;
+    justify-content: space-between;
     font-weight: 600;
 }
 

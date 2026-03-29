@@ -111,5 +111,28 @@ const convertToLocalCurrency = async (amountINR, destination) => {
     }
 };
 
-module.exports = { convertToLocalCurrency, getCurrencyInfo };
+const getMultipleCurrencies = async (destinations) => {
+    const multiContext = {};
+    for (const dest of destinations) {
+        const info = getCurrencyInfo(dest);
+        const apiKey = process.env.EXCHANGERATE_API_KEY;
+        let rate = 1;
+        
+        if (apiKey && info.code !== 'INR') {
+            try {
+                const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`);
+                const fetchedRate = response.data.conversion_rates[info.code];
+                if (fetchedRate) rate = fetchedRate;
+            } catch (err) { }
+        }
+        
+        multiContext[dest] = {
+            currency: info.code,
+            symbol: info.symbol,
+            rate: rate
+        };
+    }
+    return multiContext;
+};
 
+module.exports = { convertToLocalCurrency, getCurrencyInfo, getMultipleCurrencies };

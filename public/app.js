@@ -225,25 +225,36 @@ function renderAnalysis(data) {
     const breakdown = document.getElementById('breakdown-container');
 
     message.innerHTML = `<strong>${data.message}</strong>`;
-    if (data.currencyContext?.currency !== 'INR') {
-        message.innerHTML += `<br><small>Analysis in ${data.currencyContext.currency} (Rate: 1 INR = ${data.currencyContext.rate.toFixed(4)})</small>`;
-    }
+    breakdown.innerHTML = data.cityBreakdown.map(city => {
+        let localStr = '';
+        let flightStr = '';
+        let hotelStr = '';
+        let foodStr = '';
+        
+        if (data.multiCurrencyContext && data.multiCurrencyContext[city.city]) {
+            const ctx = data.multiCurrencyContext[city.city];
+            if (ctx.currency !== 'INR' && ctx.rate) {
+                const ls = (val) => `${ctx.symbol}${(val * ctx.rate).toLocaleString(undefined, {maximumFractionDigits:0})}`;
+                localStr = ` <span style="font-size:0.8em; opacity:0.8;">(approx. ${ls(city.totalMin)})</span>`;
+                flightStr = ` <br><span style="font-size:0.75em; opacity:0.7; font-weight:normal;">≈ ${ls(city.minFlights)}</span>`;
+                hotelStr = ` <br><span style="font-size:0.75em; opacity:0.7; font-weight:normal;">≈ ${ls(city.minHotels)}</span>`;
+                foodStr = ` <br><span style="font-size:0.75em; opacity:0.7; font-weight:normal;">≈ ${ls(city.minFood)}</span>`;
+            }
+        }
 
-    const symbol = (data.currencyContext?.currency !== 'INR') ? (data.currencyContext.symbol || data.currencyContext.currency + ' ') : '₹';
-
-    breakdown.innerHTML = data.cityBreakdown.map(city => `
+        return `
         <div style="background:rgba(255,255,255,0.05);padding:1.5rem;border-radius:16px;margin-bottom:1rem;border:1px solid ${data.feasible ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}">
             <h4 style="color:var(--primary);margin-bottom:1rem;">${city.city}</h4>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
-                <div><small>Flights</small><div style="font-weight:600;">${symbol}${city.minFlights.toLocaleString()}</div></div>
-                <div><small>Hotels</small><div style="font-weight:600;">${symbol}${city.minHotels.toLocaleString()}</div></div>
-                <div><small>Food/Local</small><div style="font-weight:600;">${symbol}${city.minFood.toLocaleString()}</div></div>
+                <div><small>Flights</small><div style="font-weight:600;">₹${city.minFlights.toLocaleString()}${flightStr}</div></div>
+                <div><small>Hotels</small><div style="font-weight:600;">₹${city.minHotels.toLocaleString()}${hotelStr}</div></div>
+                <div><small>Food/Local</small><div style="font-weight:600;">₹${city.minFood.toLocaleString()}${foodStr}</div></div>
             </div>
             <div style="margin-top:1rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:0.5rem;text-align:right;">
-                <strong style="color:var(--accent)">Estimated Min: ${symbol}${city.totalMin.toLocaleString()}</strong>
+                <strong style="color:var(--accent)">Estimated Min: ₹${(city.totalMin || 0).toLocaleString()}${localStr}</strong>
             </div>
-        </div>`).join('');
-
+        </div>`;
+    }).join('');
     const generateBtn = document.getElementById('generateButton');
     const suggContainer = document.getElementById('suggestion-container');
 
@@ -266,7 +277,15 @@ document.getElementById('generateButton')?.addEventListener('click', async () =>
     showLoading(true);
     try {
         const res  = await fetch('/api/trips/plan', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ destinations:currentTripData.input.destinations, budget:currentTripData.input.budget, days:currentTripData.input.days, currentLocation:currentTripData.input.currentLocation, allocation:currentTripData.cityBreakdown }) });
+        
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.error || `Server Status ${res.status}`);
+        }
+        
         const data = await res.json();
+        if (!data.days) throw new Error("AI returned invalid itinerary structure.");
+        
         currentTripData = { ...currentTripData, itinerary:data.days, totalEstimatedCost:data.totalEstimatedCost, weatherContext:data.weatherContext };
         renderItinerary(currentTripData);
 
@@ -277,7 +296,10 @@ document.getElementById('generateButton')?.addEventListener('click', async () =>
                 console.log('Itinerary auto-saved.');
             } catch (e) { console.error('Auto-save failed:', e); }
         }
-    } catch (e) { alert('Failed to generate itinerary.'); }
+    } catch (e) { 
+        console.error('Itinerary Error:', e);
+        alert('Failed to generate itinerary: ' + e.message); 
+    }
     finally { showLoading(false); }
 });
 
@@ -294,7 +316,8 @@ function renderItinerary(data) {
     const section = document.getElementById('itinerary-section');
     section.style.display = 'block';
 
-    const symbol = (data.currencyContext?.currency !== 'INR') ? (data.currencyContext.symbol || data.currencyContext.currency + ' ') : '₹';
+    // Find currency symbol for header (default to ₹ if no multi-currency matches yet)
+    const symbol = '₹';
 
     let weatherHtml = '';
     if (data.weatherContext && Object.keys(data.weatherContext).length > 0) {
@@ -316,10 +339,27 @@ function renderItinerary(data) {
             </div>
             ${weatherHtml}
             <div style="display:flex;flex-direction:column;gap:2rem;margin-top:2rem;">
-                ${data.itinerary.map(day => `
+                ${data.itinerary.map(day => {
+                    let lsHotel = (val) => '';
+                    let lsAct = (val) => '';
+                    let cSymbol = '₹';
+                    
+                    if (data.multiCurrencyContext) {
+                        // Find the currency context for this specific city
+                        const cityKey = Object.keys(data.multiCurrencyContext).find(k => day.city.toLowerCase().includes(k.toLowerCase())) || Object.keys(data.multiCurrencyContext)[0];
+                        if (cityKey) {
+                            const ctx = data.multiCurrencyContext[cityKey];
+                            if (ctx && ctx.currency !== 'INR') {
+                                lsHotel = (val) => ` <span style="font-size:0.7em;font-weight:normal;opacity:0.8;">(≈ ${ctx.symbol}${(val * ctx.rate).toLocaleString(undefined, {maximumFractionDigits:0})})</span>`;
+                                lsAct = (val) => ` <span style="font-size:0.8em;opacity:0.8;">(≈ ${ctx.symbol}${(val * ctx.rate).toLocaleString(undefined, {maximumFractionDigits:0})})</span>`;
+                            }
+                        }
+                    }
+
+                    return `
                     <div style="border-left:4px solid var(--primary);padding-left:1.5rem;">
                         <h3 style="margin-bottom:0.5rem;color:var(--primary);">Day ${day.day}: ${day.city}</h3>
-                        ${day.hotelSuggestion ? `<div style="background:rgba(255,107,157,0.1);padding:1rem;border-radius:12px;margin-bottom:1.5rem;border:1px solid var(--accent);"><div style="display:flex;justify-content:space-between;align-items:start;"><div><h4 style="color:var(--accent);margin:0;font-size:1rem;"><i class="fas fa-hotel"></i> ${day.hotelSuggestion.name}</h4><p style="font-size:0.8rem;color:var(--text-muted);margin:0.25rem 0;">${day.hotelSuggestion.description}</p></div><div style="font-weight:700;color:var(--accent);">${symbol}${day.hotelSuggestion.estimatedCostPerNight.toLocaleString()}<small>/night</small></div></div></div>` : ''}
+                        ${day.hotelSuggestion ? `<div style="background:rgba(255,107,157,0.1);padding:1rem;border-radius:12px;margin-bottom:1.5rem;border:1px solid var(--accent);"><div style="display:flex;justify-content:space-between;align-items:start;"><div><h4 style="color:var(--accent);margin:0;font-size:1rem;"><i class="fas fa-hotel"></i> ${day.hotelSuggestion.name}</h4><p style="font-size:0.8rem;color:var(--text-muted);margin:0.25rem 0;">${day.hotelSuggestion.description}</p></div><div style="font-weight:700;color:var(--accent);">₹${day.hotelSuggestion.estimatedCostPerNight.toLocaleString()}${lsHotel(day.hotelSuggestion.estimatedCostPerNight)}<small>/night</small></div></div></div>` : ''}
                         ${['Morning','Afternoon','Evening','Night'].map(block => {
                             const acts = day.blocks[block] || [];
                             if (!acts.length) return '';
@@ -335,14 +375,15 @@ function renderItinerary(data) {
                                             </div>
                                             <p style="font-size:0.85rem;color:var(--text-muted);margin:0.5rem 0;">${act.description}</p>
                                             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;">
-                                                <span style="font-weight:600;color:var(--accent)">${symbol}${act.cost.toLocaleString()}</span>
+                                                <span style="font-weight:600;color:var(--accent)">₹${act.cost.toLocaleString()}${lsAct(act.cost)}</span>
                                                 <button onclick="markMissed(${day.day},'${block}',${idx})" style="padding:4px 12px;font-size:0.7rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:4px;color:var(--text-muted);cursor:pointer;">Missed</button>
                                             </div>
                                         </div>
                                     </div>`).join('')}
                             </div>`;
                         }).join('')}
-                    </div>`).join('')}
+                    </div>`
+                }).join('')}
             </div>
         </div>`;
 
@@ -410,16 +451,31 @@ if (startDateInput && endDateInput) {
 }
 
 // ----------------------------------------------------------------
-// BUDGET SLIDER
+// BUDGET CONTROLS
 // ----------------------------------------------------------------
 const budgetRange = document.getElementById('budgetRange');
+const budgetInput = document.getElementById('budgetInput');
+const budgetHidden = document.getElementById('budget');
+
+function updateBudgets(val) {
+    if (budgetRange) budgetRange.value = val;
+    if (budgetInput) budgetInput.value = val;
+    if (budgetHidden) budgetHidden.value = val;
+    
+    const display = document.getElementById('inrValueDisplay');
+    if (display) display.textContent = new Intl.NumberFormat('en-IN').format(val);
+    
+    updateTripLogic();
+}
+
 if (budgetRange) {
-    budgetRange.addEventListener('input', e => {
-        const v = e.target.value;
-        document.getElementById('budgetValue').textContent = v;
-        document.getElementById('budget').value = v;
-        document.getElementById('inrValueDisplay').textContent = new Intl.NumberFormat('en-IN').format(v);
-        updateTripLogic();
+    budgetRange.addEventListener('input', e => updateBudgets(e.target.value));
+}
+if (budgetInput) {
+    budgetInput.addEventListener('input', e => {
+        let val = parseInt(e.target.value) || 0;
+        if (val > 1000000) val = 1000000; // Cap
+        updateBudgets(val);
     });
 }
 

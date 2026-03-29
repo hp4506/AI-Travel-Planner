@@ -23,21 +23,19 @@ router.get('/config/firebase', (req, res) => {
 // 1. Minimum Budget Analysis
 router.post('/analyze', async (req, res) => {
     try {
-        const { destinations, budget, days, currentLocation, isInternational } = req.body;
+        const { destinations, budget, days, currentLocation } = req.body;
         
-        let targetBudget = budget;
-        let currencyInfo = { currency: 'INR', rate: 1 };
+        // 1. Fetch currency rates for all chosen destinations
+        const multiCurrencyContext = await currencyService.getMultipleCurrencies(destinations);
 
-        if (isInternational) {
-            const conversion = await currencyService.convertToLocalCurrency(budget, destinations[0]);
-            targetBudget = conversion.amount;
-            currencyInfo = { currency: conversion.currency, symbol: conversion.symbol, rate: conversion.rate };
-        }
-
-        const analysis = await geminiService.analyzeBudgetFeasibility(destinations, targetBudget, days, currentLocation, currencyInfo.currency);
+        // 2. We keep targetBudget in INR structurally to feed the prompt accurately, 
+        // allowing Gemini to handle proportional cost-of-living splits.
+        const analysis = await geminiService.analyzeBudgetFeasibility(
+            destinations, budget, days, currentLocation, multiCurrencyContext
+        );
         
-        // Append currency context for the frontend
-        res.status(200).json({ ...analysis, currencyContext: currencyInfo });
+        // Append multi-currency knowledge so the frontend can render per-city costs correctly
+        res.status(200).json({ ...analysis, multiCurrencyContext });
     } catch (error) {
         console.error('--- ERROR IN ANALYSIS ---');
         console.error(error.stack || error);
