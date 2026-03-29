@@ -55,7 +55,7 @@ const analyzeBudgetFeasibility = async (destinations, budget, days, currentLocat
         return JSON.parse(cleanedText);
     } catch (error) {
         console.error("Gemini Feasibility Error:", error);
-        throw new Error("AI analysis failed to generate. Please check your API key.");
+        throw new Error(error.message || "AI analysis failed. Your API key might be invalid or quota exceeded.");
     }
 };
 
@@ -106,7 +106,7 @@ const generateItinerary = async (destinations, budget, days, currentLocation, al
         return JSON.parse(cleanedText);
     } catch (error) {
         console.error("Gemini Itinerary Error:", error);
-        throw new Error("Failed to generate itinerary. AI response was invalid.");
+        throw new Error(error.message || "Failed to generate itinerary. AI response was invalid.");
     }
 };
 
@@ -131,7 +131,7 @@ const rescheduleItinerary = async (remainingItinerary, missedActivity, remaining
         return JSON.parse(cleanedText);
     } catch (error) {
         console.error("Gemini Reschedule Error:", error);
-        throw new Error("Dynamic rescheduling failed.");
+        throw new Error(error.message || "Dynamic rescheduling failed.");
     }
 };
 

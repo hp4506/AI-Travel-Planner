@@ -41,7 +41,7 @@ router.post('/analyze', async (req, res) => {
     } catch (error) {
         console.error('--- ERROR IN ANALYSIS ---');
         console.error(error.stack || error);
-        res.status(500).json({ error: 'Failed to analyze budget' });
+        res.status(500).json({ error: 'Failed to analyze budget: ' + (error.message || 'Unknown server error') });
     }
 });
 
@@ -115,6 +115,36 @@ router.get('/currency-suggestion', async (req, res) => {
     } catch (error) {
         console.error('Currency suggestion error:', error);
         res.status(500).json({ error: 'Failed to get currency suggestion' });
+    }
+});
+
+// 6. List Saved Trips
+router.get('/list', async (req, res) => {
+    try {
+        const { userId } = req.query;
+        if (!userId) return res.status(400).json({ error: 'Missing userId' });
+        
+        const snapshot = await db.collection('itineraries')
+            .where('userId', '==', userId)
+            .get();
+        
+        const trips = [];
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            trips.push({
+                id: doc.id,
+                ...data.itineraryData,
+                savedAt: data.createdAt
+            });
+        });
+
+        // Sort descending by date
+        trips.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+        
+        res.status(200).json({ trips });
+    } catch (error) {
+        console.error('Error fetching trips:', error);
+        res.status(500).json({ error: 'Failed to fetch trips: ' + (error.message || 'Unknown error') });
     }
 });
 

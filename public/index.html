@@ -3,207 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VagaWise - AI Logic Trip Planner</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>VagaWise — AI-Powered Travel Planning</title>
+    <meta name="description" content="VagaWise uses advanced AI logic to craft the perfect travel itinerary.">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <!-- Firebase Client SDKs -->
     <script type="module" src="firebase-config.js"></script>
     <script type="module" src="auth.js"></script>
 </head>
 <body>
+
     <div class="bg-atmosphere">
         <div class="sphere sphere-1"></div>
         <div class="sphere sphere-2"></div>
+        <div class="sphere sphere-3"></div>
     </div>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fas fa-route"></i>
-            VagaWise<span>.</span>
-        </div>
-        
-        <nav class="nav-links">
-            <a href="#" class="nav-item active"><i class="fas fa-th-large"></i> Dashboard</a>
-            <a href="#" class="nav-item"><i class="fas fa-plus"></i> New Plan</a>
-            <a href="#" class="nav-item"><i class="fas fa-bookmark"></i> Saved Routes</a>
-            <a href="#" class="nav-item"><i class="fas fa-cog"></i> Account Settings</a>
+    <!-- ===================== LANDING PAGE ===================== -->
+    <section id="landing-page" class="landing-wrapper">
+
+        <nav class="land-nav">
+            <div class="land-nav-logo"><i class="fas fa-route"></i> VagaWise<span>.</span></div>
+            <div class="land-nav-links">
+                <a href="#features-anchor">Features</a>
+                <a href="#about-anchor">How it Works</a>
+            </div>
+            <div class="land-nav-ctas">
+                <button id="navLoginBtn" class="nav-ghost-btn">Log In</button>
+                <button id="navSignupBtn" class="nav-solid-btn">Sign Up Free</button>
+            </div>
         </nav>
 
-        <div style="margin-top: auto;">
-            <a href="#" class="nav-item"><i class="fas fa-headset"></i> AI Support</a>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <div class="main-area">
-        <header class="top-header">
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Where to? or provide a logic query">
-            </div>
-
-            <div class="user-profile">
-                <!-- Auth Nav (Initially shown) -->
-                <div id="auth-nav">
-                    <button id="navLoginBtn" class="logout-btn" style="margin-right: 0.5rem;">Log In</button>
-                    <button id="navSignupBtn" class="cta-button" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; box-shadow: none; width: auto; margin: 0;">Sign Up</button>
-                </div>
-                <!-- User Nav (Initially hidden) -->
-                <div id="user-nav" style="display: none; align-items: center; gap: 1rem;">
-                    <span id="userEmailDisplay" class="user-email"></span>
-                    <button id="navLogoutBtn" class="logout-btn">Log Out</button>
+        <div class="hero" id="hero-anchor">
+            <div class="hero-glow"></div>
+            <div class="hero-content">
+                <div class="hero-badge"><span class="badge-dot"></span> AI-Powered · Real-Time · Free to Use</div>
+                <h1 class="hero-title">Travel Smarter.<br><span class="gradient-text">Plan in Seconds.</span></h1>
+                <p class="hero-subtitle">VagaWise transforms your travel dreams into a perfectly optimized itinerary — powered by AI logic, real-time budget analysis, and intelligent scheduling.</p>
+                <div class="hero-actions">
+                    <button id="getStartedBtn" class="hero-cta-btn">Start Planning Free <i class="fas fa-arrow-right"></i></button>
+                    <div class="hero-trust">
+                        <div class="trust-avatars">
+                            <img src="https://i.pravatar.cc/32?img=1" alt="">
+                            <img src="https://i.pravatar.cc/32?img=2" alt="">
+                            <img src="https://i.pravatar.cc/32?img=3" alt="">
+                        </div>
+                        <span>Trusted by <strong>1,200+</strong> travelers</span>
+                    </div>
                 </div>
             </div>
-        </header>
 
-        <!-- Auth Modal -->
-        <div id="authModal" class="modal">
-            <div class="glass-panel">
-                <h2 id="authModalTitle">Sign In</h2>
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" id="authEmail" class="input-field" placeholder="you@example.com" required>
+            <div class="hero-mockup">
+                <div class="mockup-card mc-main">
+                    <div class="mc-header">
+                        <div class="mc-dot red"></div><div class="mc-dot yellow"></div><div class="mc-dot green"></div>
+                        <span>Trip to Bali · 7 Days</span>
+                    </div>
+                    <div class="mc-row"><i class="fas fa-plane-departure"></i> Mumbai → Bali</div>
+                    <div class="mc-row"><i class="fas fa-hotel"></i> 3-star stays · ₹12,000</div>
+                    <div class="mc-row"><i class="fas fa-utensils"></i> 21 meals planned · ₹4,500</div>
+                    <div class="mc-row success"><i class="fas fa-check-circle"></i> Budget: ✅ On Track</div>
+                    <div class="mc-bar"><div class="mc-bar-fill" style="width:68%"></div></div>
+                    <p class="mc-bar-label">68% of ₹50,000 budget used</p>
                 </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="authPassword" class="input-field" placeholder="••••••••" required>
-                </div>
-                <button id="authSubmitBtn" class="cta-button">Sign In</button>
-                <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted);">
-                    <span id="authSwitchText">Don't have an account?</span> 
-                    <a href="#" id="authSwitchLink" style="color: var(--primary); text-decoration: none; font-weight: 600;">Sign Up</a>
-                </p>
+                <div class="mockup-pill mp-1"><i class="fas fa-brain"></i> AI Logic Active</div>
+                <div class="mockup-pill mp-2"><i class="fas fa-chart-line"></i> Budget Saved: ₹16K</div>
+                <div class="mockup-pill mp-3"><i class="fas fa-calendar-check"></i> 7 Days, 14 Activities</div>
+            </div>
+
+            <div class="scroll-hint">
+                <div class="scroll-mouse"><div class="scroll-dot"></div></div>
+                <span>Scroll to explore</span>
             </div>
         </div>
 
-        <!-- Main Dashboard Content -->
-        <main id="mainAppContent" style="display: none;">
-            <div class="dashboard-content">
-                <!-- Card 1: Destinations -->
-                <div class="card">
-                    <h3 class="card-title"><span>(1)</span> Select Destinations</h3>
-                    <div class="search-bar" style="max-width: none;">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="destinations" placeholder="Search...">
+        <section class="features-section" id="features-anchor">
+            <div class="section-label">WHAT WE OFFER</div>
+            <h2 class="section-title">Everything you need to<br><span class="gradient-text">plan the perfect trip.</span></h2>
+            <p class="section-sub">Designed for modern travelers who want results, not complexity.</p>
+            <div class="features-grid">
+                <div class="feat-card">
+                    <div class="feat-icon-wrap"><i class="fas fa-brain"></i></div>
+                    <h3>AI Logic Engine</h3>
+                    <p>Our AI analyzes your preferences, local data, and real-time conditions to generate highly logical, optimal itineraries.</p>
+                    <div class="feat-tag">Powered by Gemini AI</div>
+                </div>
+                <div class="feat-card feat-card--glow">
+                    <div class="feat-icon-wrap icon-accent"><i class="fas fa-wallet"></i></div>
+                    <h3>Smart Budget Control</h3>
+                    <p>Set your budget and watch every rupee work harder. With live currency conversion and category breakdowns.</p>
+                    <div class="feat-tag">Live Exchange Rates</div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon-wrap"><i class="fas fa-route"></i></div>
+                    <h3>Optimized Routes</h3>
+                    <p>Whether domestic, international, or multi-city — VagaWise crafts the most efficient route for you.</p>
+                    <div class="feat-tag">Domestic & International</div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon-wrap"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>Day-by-Day Plans</h3>
+                    <p>A fully itemized, day-by-day breakdown of activities, meals, stays, and transport — all in one itinerary.</p>
+                    <div class="feat-tag">Detailed Scheduling</div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon-wrap"><i class="fas fa-location-dot"></i></div>
+                    <h3>Location-Aware</h3>
+                    <p>Tell us where you are and VagaWise calculates local transport costs and departure options from your doorstep.</p>
+                    <div class="feat-tag">GPS Enabled</div>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon-wrap"><i class="fas fa-cloud-sun"></i></div>
+                    <h3>Cloud Saved Trips</h3>
+                    <p>Your trips are securely saved to your account. Revisit, share, or refine your plans anytime from any device.</p>
+                    <div class="feat-tag">Cloud Synced</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-section" id="about-anchor">
+            <div class="how-label">HOW IT WORKS</div>
+            <h2 class="section-title">Three steps to your <span class="gradient-text">dream trip.</span></h2>
+            <div class="steps-row">
+                <div class="step-item">
+                    <div class="step-num">01</div>
+                    <h3>Set Your Parameters</h3>
+                    <p>Enter destination, dates, location, budget, and trip type. Takes less than 60 seconds.</p>
+                </div>
+                <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="step-item">
+                    <div class="step-num">02</div>
+                    <h3>AI Analyzes & Plans</h3>
+                    <p>Our Gemini AI processes your inputs and generates a fully optimized itinerary with budget breakdowns.</p>
+                </div>
+                <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="step-item">
+                    <div class="step-num">03</div>
+                    <h3>Explore & Enjoy</h3>
+                    <p>Review your personalized plan, save it to your account, and set off on your adventure!</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-strip">
+            <h2>Ready to travel smarter?</h2>
+            <p>Join thousands of explorers who plan with AI logic.</p>
+            <button id="getStartedBtn2" class="hero-cta-btn">Get Started — It's Free <i class="fas fa-arrow-right"></i></button>
+        </section>
+
+        <footer class="land-footer">
+            <div class="land-nav-logo"><i class="fas fa-route"></i> VagaWise<span>.</span></div>
+            <p>© 2025 VagaWise. Built with ❤️ and AI.</p>
+        </footer>
+    </section>
+
+    <!-- ===================== APP (shown after login) ===================== -->
+    <div id="app-container" style="display:none; height: 100vh; width: 100vw; overflow: hidden;">
+        <!-- Sidebar -->
+        <aside class="sidebar" style="flex-shrink: 0;">
+            <div class="logo"><i class="fas fa-route"></i> VagaWise<span>.</span></div>
+            <nav class="nav-links">
+                <a href="#" class="nav-item active" data-view="dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#" class="nav-item" data-view="new-plan"><i class="fas fa-plus-circle"></i> New Plan</a>
+                <a href="#" class="nav-item" data-view="account"><i class="fas fa-user-circle"></i> Account</a>
+            </nav>
+            <div style="margin-top: auto;">
+                <a href="#" class="nav-item"><i class="fas fa-headset"></i> AI Support</a>
+            </div>
+        </aside>
+
+        <!-- Main Area -->
+        <div class="main-area" style="flex: 1; overflow-y: auto;">
+            <header class="top-header">
+                <div class="top-header-left">
+                    <span class="view-heading" id="viewHeading">Dashboard</span>
+                </div>
+                <div class="user-profile">
+                    <div id="auth-nav" style="display:none;">
+                        <button id="navLoginBtn2" class="logout-btn" style="margin-right:0.5rem;">Log In</button>
+                        <button id="navSignupBtn2" class="cta-button" style="padding:0.5rem 1.25rem;font-size:0.9rem;box-shadow:none;width:auto;margin:0;">Sign Up</button>
                     </div>
-                    <div class="tags-container" id="quick-tags">
-                        <span class="tag">Paris</span>
-                        <span class="tag">Bali</span>
-                        <span class="tag">Bag</span>
-                        <span class="tag">Ab...</span>
-                    </div>
-                    <div class="suggestion-previews">
-                        <div class="suggestion-preview"><img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=200&q=80" alt="Paris"></div>
-                        <div class="suggestion-preview"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=200&q=80" alt="Bali"></div>
-                        <div class="suggestion-preview"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=200&q=80" alt="Madrid"></div>
+                    <div id="user-nav" style="display:none; align-items:center; gap:1rem;">
+                        <span id="userEmailDisplay" class="user-email"></span>
+                        <button id="navLogoutBtn" class="logout-btn">Log Out</button>
                     </div>
                 </div>
+            </header>
 
-                <!-- Card 2: Budget -->
-                <div class="card">
-                    <h3 class="card-title"><span>(2)</span> Your Budget</h3>
-                    <div class="range-container">
-                        <div class="range-header">
-                            <span>INR</span>
-                            <span id="budgetValue">50000</span>
-                        </div>
-                        <input type="range" id="budgetRange" min="10000" max="500000" step="5000" value="50000">
-                        <input type="hidden" id="budget" value="50000">
+            <!-- DASHBOARD VIEW: Planned Trips -->
+            <div id="view-dashboard" class="app-view active-view" style="flex-direction: column;">
+                <div class="dashboard-hero-bar">
+                    <div>
+                        <h2>Your Planned Trips</h2>
+                        <p style="color:var(--text-muted);margin-top:0.25rem;">All your AI-crafted itineraries in one place.</p>
                     </div>
-                    <div class="input-group">
-                        <label>Currency</label>
-                        <select id="currencySelect" class="input-field">
-                            <option value="INR">INR</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                        </select>
-                    </div>
-                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
-                        <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Currency Conversion (Live Rate)</p>
-                        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; align-items: center;">
-                            <div>
-                                <p style="font-size: 0.8rem; color: var(--text-muted);">INR</p>
-                                <p id="inrValueDisplay" style="font-size: 1.2rem; font-weight: 700;">50000</p>
-                            </div>
-                            <i class="fas fa-exchange-alt" style="color: var(--text-muted);"></i>
-                            <div>
-                                <p id="targetCurrencyLabel" style="font-size: 0.8rem; color: var(--text-muted);">EUR</p>
-                                <p style="font-size: 1.2rem; font-weight: 700; color: var(--accent);"><span id="targetCurrencySymbol">€</span><span id="eurValueDisplay">0.00</span></p>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="cta-button" id="goToNewPlan" style="width:auto;padding:0.75rem 1.5rem;font-size:0.9rem;">
+                        <i class="fas fa-plus"></i> Plan New Trip
+                    </button>
                 </div>
-
-                <!-- Card 3: Select Dates -->
-                <div class="card">
-                    <h3 class="card-title"><span>(3)</span> Select Dates</h3>
-                    <div class="input-group">
-                        <label>Start Date</label>
-                        <input type="date" id="startDate" class="input-field">
-                    </div>
-                    <div class="input-group">
-                        <label>End Date</label>
-                        <input type="date" id="endDate" class="input-field">
-                    </div>
-                    <div id="durationDisplay" style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--accent); font-weight: 600;">
-                        Duration: 0 days
-                    </div>
-                    <input type="hidden" id="days" value="0">
-                </div>
-
-                <!-- Card 4: Location -->
-                <div class="card">
-                    <h3 class="card-title"><span>(4)</span> Set Current Location</h3>
-                    <div class="input-group" style="position: relative;">
-                        <input type="text" id="currentLocation" class="input-field" placeholder="e.g. Mumbai, India">
-                        <button id="getLocationBtn" style="position: absolute; right: 10px; top: 10px; background: transparent; border: none; color: var(--primary); cursor: pointer;"><i class="fas fa-location-crosshairs"></i></button>
-                    </div>
-                </div>
-
-                <!-- Card 5: Trip Type -->
-                <div class="card">
-                    <h3 class="card-title"><span>(5)</span> Select Trip Type</h3>
-                    <div class="tags-container" style="gap: 1rem;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="radio" name="tripType" value="false" checked> Domestic
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="radio" name="tripType" value="true"> International
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="radio" name="tripType" value="multi"> Multi-city
-                        </label>
-                    </div>
+                <div id="savedTripsList" class="saved-trips-grid">
+                    <div class="trips-loading"><i class="fas fa-spinner fa-spin"></i> Loading your trips…</div>
                 </div>
             </div>
 
-            <div class="cta-area">
-                <button id="analyzeButton" class="cta-button">
-                    Craft & Plan Your optimized Itinerary with AI Logic 🌍
+            <!-- NEW PLAN VIEW: Trip Planning Form -->
+            <div id="view-new-plan" class="app-view" style="display:none;">
+
+            <main id="mainAppContent">
+                <div class="dashboard-content">
+                    <div class="card">
+                        <h3 class="card-title"><span>(1)</span> Select Destinations</h3>
+                        <div class="search-bar" style="max-width:none;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="destinations" placeholder="Search city or country…">
+                        </div>
+                        <div class="tags-container" id="quick-tags">
+                            <span class="tag">Paris</span>
+                            <span class="tag">Bali</span>
+                            <span class="tag">Bangkok</span>
+                            <span class="tag">Dubai</span>
+                        </div>
+                        <div class="suggestion-previews">
+                            <div class="suggestion-preview"><img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=200&q=80" alt="Paris"></div>
+                            <div class="suggestion-preview"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=200&q=80" alt="Bali"></div>
+                            <div class="suggestion-preview"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=200&q=80" alt="Madrid"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title"><span>(2)</span> Your Budget</h3>
+                        <div class="range-container">
+                            <div class="range-header"><span>INR</span><span id="budgetValue">50000</span></div>
+                            <input type="range" id="budgetRange" min="10000" max="500000" step="5000" value="50000">
+                            <input type="hidden" id="budget" value="50000">
+                        </div>
+                        <div class="input-group">
+                            <label>Currency</label>
+                            <select id="currencySelect" class="input-field">
+                                <option value="INR">INR</option>
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                            </select>
+                        </div>
+                        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
+                            <p style="font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;">Currency Conversion (Live Rate)</p>
+                            <div style="display:flex;justify-content:space-between;margin-top:0.5rem;align-items:center;">
+                                <div><p style="font-size:0.8rem;color:var(--text-muted);">INR</p><p id="inrValueDisplay" style="font-size:1.2rem;font-weight:700;">50000</p></div>
+                                <i class="fas fa-exchange-alt" style="color:var(--text-muted);"></i>
+                                <div><p id="targetCurrencyLabel" style="font-size:0.8rem;color:var(--text-muted);">EUR</p><p style="font-size:1.2rem;font-weight:700;color:var(--accent);"><span id="targetCurrencySymbol">€</span><span id="eurValueDisplay">0.00</span></p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title"><span>(3)</span> Select Dates</h3>
+                        <div class="input-group"><label>Start Date</label><input type="date" id="startDate" class="input-field"></div>
+                        <div class="input-group"><label>End Date</label><input type="date" id="endDate" class="input-field"></div>
+                        <div id="durationDisplay" style="margin-top:0.5rem;font-size:0.9rem;color:var(--accent);font-weight:600;">Duration: 0 days</div>
+                        <input type="hidden" id="days" value="0">
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title"><span>(4)</span> Set Current Location</h3>
+                        <div class="input-group" style="position:relative;">
+                            <input type="text" id="currentLocation" class="input-field" placeholder="e.g. Mumbai, India">
+                            <button id="getLocationBtn" style="position:absolute;right:10px;top:10px;background:transparent;border:none;color:var(--primary);cursor:pointer;"><i class="fas fa-location-crosshairs"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title"><span>(5)</span> Select Trip Type</h3>
+                        <div class="tags-container" style="gap:1rem;">
+                            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;"><input type="radio" name="tripType" value="false" checked> Domestic</label>
+                            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;"><input type="radio" name="tripType" value="true"> International</label>
+                            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;"><input type="radio" name="tripType" value="multi"> Multi-city</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-area">
+                    <button id="analyzeButton" class="cta-button">Craft &amp; Plan Your Optimized Itinerary with AI Logic 🌍</button>
+                </div>
+
+                <section id="analysis-section" class="card" style="display:none;margin:2.5rem;max-width:1400px;">
+                    <h2 id="analysis-title">Budget Analysis</h2>
+                    <p id="analysis-message" style="margin:1rem 0;color:var(--text-muted);"></p>
+                    <div id="breakdown-container"></div>
+                    <div id="suggestion-container" style="display:none;margin-top:1.5rem;">
+                        <h3>Suggestions:</h3>
+                        <ul id="suggestion-list" style="margin-left:1.5rem;margin-top:0.5rem;"></ul>
+                    </div>
+                    <div style="display:flex;gap:1rem;margin-top:2rem;">
+                        <button id="generateButton" class="cta-button" style="display:none;flex:1;">Continue with AI Planning</button>
+                        <button id="restartButton" class="logout-btn" style="flex:1;">Start Over</button>
+                    </div>
+                </section>
+
+                <section id="itinerary-section" style="display:none;padding:2.5rem;"></section>
+                <div id="loading" class="loading-spinner"></div>
+            </main>
+        </div>
+
+        <!-- ACCOUNT VIEW: User Info -->
+        <div id="view-account" class="app-view" style="display:none;">
+            <div class="account-page">
+                <div class="account-profile-card">
+                    <div class="account-avatar" id="accountAvatar">A</div>
+                    <div>
+                        <h2 id="accountName">Traveler</h2>
+                        <p id="accountEmail" class="account-email-display">—</p>
+                    </div>
+                </div>
+                <div class="account-details-grid">
+                    <div class="account-detail-item">
+                        <span class="detail-label"><i class="fas fa-envelope"></i> Email Address</span>
+                        <span class="detail-value" id="accountEmailFull">—</span>
+                    </div>
+                    <div class="account-detail-item">
+                        <span class="detail-label"><i class="fas fa-calendar-alt"></i> Member Since</span>
+                        <span class="detail-value" id="accountCreated">—</span>
+                    </div>
+                    <div class="account-detail-item">
+                        <span class="detail-label"><i class="fas fa-map-marked-alt"></i> Trips Planned</span>
+                        <span class="detail-value" id="accountTripCount">0</span>
+                    </div>
+                    <div class="account-detail-item">
+                        <span class="detail-label"><i class="fas fa-shield-alt"></i> User ID</span>
+                        <span class="detail-value" id="accountUID" style="font-size:0.75rem;word-break:break-all;color:var(--text-muted);">—</span>
+                    </div>
+                </div>
+                <button id="accountLogoutBtn" class="logout-btn" style="margin-top:2rem;padding:0.85rem 2rem;">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
                 </button>
             </div>
+        </div>
+    </div> <!-- End Main Area -->
+    </div> <!-- End App Container -->
 
-            <!-- Results Sections -->
-            <section id="analysis-section" class="card" style="display: none; margin: 2.5rem; max-width: 1400px;">
-                <h2 id="analysis-title">Budget Analysis</h2>
-                <p id="analysis-message" style="margin: 1rem 0; color: var(--text-muted);"></p>
-                <div id="breakdown-container"></div>
-                <div id="suggestion-container" style="display: none; margin-top: 1.5rem;">
-                    <h3>Suggestions:</h3>
-                    <ul id="suggestion-list" style="margin-left: 1.5rem; margin-top: 0.5rem;"></ul>
-                </div>
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button id="generateButton" class="cta-button" style="display: none; flex: 1;">Continue with AI Planning</button>
-                    <button id="restartButton" class="logout-btn" style="flex: 1;">Start Over</button>
-                </div>
-            </section>
-
-            <section id="itinerary-section" style="display: none; padding: 2.5rem;"></section>
-
-            <div id="loading" class="loading-spinner"></div>
-        </main>
+    <!-- AUTH MODAL (always top-level) -->
+    <div id="authModal" class="modal">
+        <div class="auth-card">
+            <div class="auth-card-icon"><i class="fas fa-route"></i></div>
+            <h2 id="authModalTitle">Welcome Back</h2>
+            <p class="auth-card-sub">Sign in to continue planning your next adventure.</p>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="authEmail" class="input-field" placeholder="you@example.com" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="authPassword" class="input-field" placeholder="••••••••" required>
+            </div>
+            <button id="authSubmitBtn" class="cta-button" style="margin-top:0.5rem;">Sign In</button>
+            <p class="auth-switch-text">
+                <span id="authSwitchText">Don't have an account?</span>
+                <a href="#" id="authSwitchLink">Sign Up</a>
+            </p>
+        </div>
     </div>
 
     <script type="module" src="app.js"></script>
