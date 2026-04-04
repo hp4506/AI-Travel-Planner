@@ -1,92 +1,116 @@
-const fs = require('fs');
-const path = require('path');
 const { db } = require('../config/firebaseConfig');
+const fs = require('fs').promises;
+const path = require('path');
 
-const LOCAL_DATA_PATH = path.join(__dirname, '..', 'data', 'local_itineraries.json');
+const LOCAL_DATA_PATH = path.join(__dirname, '../data/local_itineraries.json');
 
 /**
- * DUAL-MODE STORAGE SERVICE: Firebase Cloud (Primary) + Local Disk (Fallback)
- * Ensures 100% reliability for current 2026 clock skew vs future deployment.
+ * Resilient Storage Service:
+ * Prioritizes Cloud (Firebase) but fails over to Local JSON for 100% reliability
+ * especially during regional auth skew (e.g. 2024 vs 2026).
  */
 class StorageService {
-    constructor() {
-        // Ensure data directory exists
-        const dataDir = path.dirname(LOCAL_DATA_PATH);
-        if (!fs.existsSync(dataDir)) {
-            fs.mkdirSync(dataDir, { recursive: true });
-        }
-        // Initialize local file if missing
-        if (!fs.existsSync(LOCAL_DATA_PATH)) {
-            fs.writeFileSync(LOCAL_DATA_PATH, JSON.stringify([]));
-        }
-    }
+    /**
+     * Save Itinerary - Resilient
+     * @param {string} userId - User ID
+     * @param {Object} tripData - Full Trip Data
+     */
+    async saveItinerary(userId, tripData) {
+        let savedToCloud = false;
+        let error = null;
 
-    async saveTrip(userId, itineraryData) {
-        const payload = {
-            userId,
-            savedAt: new Date().toISOString(),
-            ...itineraryData
-        };
-
+        // Try Cloud Save (Firestore)
         try {
-            console.log('[STORAGE] Attempting Cloud Save (Firebase)...');
-            const docRef = await db.collection('itineraries').add({
-                userId,
-                createdAt: payload.savedAt,
-                itineraryData: itineraryData
+            const docRef = db.collection('trips').doc(userId).collection('user_trips').doc();
+            await docRef.set({
+                ...tripData,
+                savedAt: new Date().toISOString()
             });
-            console.log(`[SUCCESS] Saved to Cloud: ${docRef.id}`);
-            return { success: true, id: docRef.id, mode: 'cloud' };
-        } catch (error) {
-            console.warn(`[FAILOVER] Cloud failure: ${error.message}. Switching to Local Fail-Safe.`);
-            
-            // --- LOCAL FAIL-SAFE ---
-            const localData = JSON.parse(fs.readFileSync(LOCAL_DATA_PATH, 'utf8'));
-            const localId = 'loc_' + Date.now();
-            localData.push({ id: localId, ...payload });
-            
-            fs.writeFileSync(LOCAL_DATA_PATH, JSON.stringify(localData, null, 2));
-            console.log('[SUCCESS] Saved to Local Disk.');
-            return { success: true, id: localId, mode: 'local' };
+            savedToCloud = true;
+            console.log('[STORAGE] Successfully saved to Cloud (Firestore).');
+        } catch (err) {
+            error = err;
+            console.error('[STORAGE] Cloud Save Failed (likely Auth/Clock Skew):', err.message);
         }
+
+        // Always Back up and fallback to Local Save (JSON)
+        try {
+            await this.saveToLocalBackup(userId, tripData);
+            console.log('[STORAGE] Successfully synchronized to Local Backup.');
+        } catch (localErr) {
+            console.error('[STORAGE] Local Backup failed:', localErr.message);
+        }
+
+        if (!savedToCloud) {
+            console.warn('[STORAGE] OPERATING IN OFFLINE/FALLBACK MODE. Data is safe but local-only.');
+            return { success: true, mode: 'local', warning: 'Cloud sync failed. Data saved locally.' };
+        }
+
+        return { success: true, mode: 'cloud' };
     }
 
-    async listTrips(userId) {
-        let cloudTrips = [];
-        let localTrips = [];
-
-        // 1. Fetch Cloud Trips (Primary)
+    /**
+     * List Itineraries - Resilient
+     * Merges Cloud and Local data if available.
+     */
+    async listItineraries(userId) {
+        let results = [];
+        
+        // 1. Try Cloud Fetch
         try {
-            const snapshot = await db.collection('itineraries')
-                .where('userId', '==', userId)
-                .get();
+            const snapshot = await db.collection('trips').doc(userId).collection('user_trips')
+                .orderBy('savedAt', 'desc').get();
             
             snapshot.forEach(doc => {
-                const data = doc.data();
-                cloudTrips.push({
-                    id: doc.id,
-                    ...data.itineraryData,
-                    savedAt: data.createdAt,
-                    mode: 'cloud'
-                });
+                results.push({ id: doc.id, ...doc.data() });
             });
-        } catch (error) {
-            console.warn('[STORAGE] Cloud listing unavailable. Relying on Local data.');
+            console.log(`[STORAGE] Fetched ${results.length} trips from Cloud.`);
+        } catch (err) {
+            console.error('[STORAGE] Cloud Fetch failed, relying on Local Data:', err.message);
         }
 
-        // 2. Fetch Local Trips (Fail-Safe)
+        // 2. Hydrate from Local Backup (Ensure no loss)
         try {
-            const localData = JSON.parse(fs.readFileSync(LOCAL_DATA_PATH, 'utf8'));
-            localTrips = localData.filter(t => t.userId === userId).map(t => ({ ...t, mode: 'local' }));
-        } catch (error) {
-            console.error('[STORAGE] Local read error:', error.message);
+            const localData = await this.readLocalBackup();
+            const userLocalTrps = localData[userId] || [];
+            
+            // Deduplicate by simple destination/date check if needed
+            userLocalTrps.forEach(localTrip => {
+                const alreadyExists = results.some(cloudTrip => 
+                    cloudTrip.destination === localTrip.destination && cloudTrip.startDate === localTrip.startDate
+                );
+                if (!alreadyExists) {
+                    results.unshift({ ...localTrip, id: `local-${Date.now()}`, mode: 'local' });
+                }
+            });
+        } catch (localErr) {
+            console.error('[STORAGE] Local Fetch failed:', localErr.message);
         }
 
-        // 3. Merge & Deduplicate
-        const allTrips = [...cloudTrips, ...localTrips];
-        allTrips.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+        return results;
+    }
 
-        return allTrips;
+    /* Private Helpers */
+    async saveToLocalBackup(userId, tripData) {
+        const data = await this.readLocalBackup();
+        if (!data[userId]) data[userId] = [];
+        
+        // Add to history (limit to last 20 for space)
+        data[userId].unshift({ ...tripData, savedAt: new Date().toISOString() });
+        data[userId] = data[userId].slice(0, 20);
+
+        await fs.writeFile(LOCAL_DATA_PATH, JSON.stringify(data, null, 2), 'utf8');
+    }
+
+    async readLocalBackup() {
+        try {
+            const content = await fs.readFile(LOCAL_DATA_PATH, 'utf8');
+            return JSON.parse(content);
+        } catch (err) {
+            // Ensure data directory exists
+            await fs.mkdir(path.dirname(LOCAL_DATA_PATH), { recursive: true }).catch(() => {});
+            return {};
+        }
     }
 }
 

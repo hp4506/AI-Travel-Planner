@@ -100,7 +100,7 @@ router.post('/save', async (req, res) => {
             return res.status(400).json({ error: 'Missing userId or itineraryData' });
         }
 
-        const result = await storageService.saveTrip(userId, itineraryData);
+        const result = await storageService.saveItinerary(userId, itineraryData);
         res.status(200).json(result);
     } catch (error) {
         console.error('--- STORAGE SAVE ERROR ---');
@@ -159,7 +159,7 @@ router.get('/list', async (req, res) => {
         const { userId } = req.query;
         if (!userId) return res.status(400).json({ error: 'Missing userId' });
         
-        const trips = await storageService.listTrips(userId);
+        const trips = await storageService.listItineraries(userId);
         res.status(200).json({ trips });
     } catch (error) {
         console.error('Error fetching trips:', error);
