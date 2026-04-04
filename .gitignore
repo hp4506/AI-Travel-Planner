@@ -73,3 +73,4 @@ test-*.js
 test-*.mjs
 verify-*.js
 *.test.js
+service-account.json

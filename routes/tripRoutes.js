@@ -3,6 +3,7 @@ const router = express.Router();
 const geminiService = require('../services/geminiService');
 const currencyService = require('../services/currencyService');
 const weatherService = require('../services/weatherService');
+const storageService = require('../services/storageService');
 const { db } = require('../config/firebaseConfig');
 const dotenv = require('dotenv');
 
@@ -23,41 +24,58 @@ router.get('/config/firebase', (req, res) => {
 // 1. Minimum Budget Analysis
 router.post('/analyze', async (req, res) => {
     try {
-        const { destinations, budget, days, currentLocation, isInternational } = req.body;
+        const { destinations, budget, days, currentLocation, isInternational, daysPerCity, preferences } = req.body;
         
-        let targetBudget = budget;
-        let currencyInfo = { currency: 'INR', rate: 1 };
-
-        if (isInternational) {
-            const conversion = await currencyService.convertToLocalCurrency(budget, destinations[0]);
-            targetBudget = conversion.amount;
-            currencyInfo = { currency: conversion.currency, symbol: conversion.symbol, rate: conversion.rate };
+        // Pass the optional daysPerCity and preferences to the AI for duration-aware and tailored analysis
+        const analysis = await geminiService.analyzeBudgetFeasibility(destinations, budget, days, currentLocation, daysPerCity, 'INR', preferences);
+        
+        // Enrich the analysis with currency conversions for each city
+        if (analysis.cityBreakdown) {
+            for (let i = 0; i < analysis.cityBreakdown.length; i++) {
+                const cityInfo = analysis.cityBreakdown[i];
+                const dest = cityInfo.city;
+                
+                // Get currency info for this specific city
+                const currencyInfo = currencyService.getCurrencyInfo(dest);
+                
+                if (currencyInfo.code !== 'INR') {
+                    // Convert the AI's INR allocation for this city to its local currency
+                    const conversion = await currencyService.convertToLocalCurrency(cityInfo.allocationINR || cityInfo.totalMin, dest);
+                    cityInfo.localCurrency = {
+                        symbol: conversion.symbol,
+                        code: conversion.currency,
+                        rate: conversion.rate,
+                        amount: conversion.amount
+                    };
+                } else {
+                    cityInfo.localCurrency = { symbol: '₹', code: 'INR', rate: 1, amount: cityInfo.allocationINR || cityInfo.totalMin };
+                }
+            }
         }
-
-        const analysis = await geminiService.analyzeBudgetFeasibility(destinations, targetBudget, days, currentLocation, currencyInfo.currency);
         
-        // Append currency context for the frontend
-        res.status(200).json({ ...analysis, currencyContext: currencyInfo });
+        res.status(200).json(analysis);
     } catch (error) {
-        console.error('--- ERROR IN ANALYSIS ---');
+        console.error('--- CRITICAL ERROR IN ANALYSIS ---');
         console.error(error.stack || error);
-        res.status(500).json({ error: 'Failed to analyze budget: ' + (error.message || 'Unknown server error') });
+        // This should theoretically not be reached due to service-level fallbacks
+        res.status(500).json({ error: 'An unexpected error occurred. Please try again soon.' });
     }
 });
 
 // 2. Generate Itinerary (Weather Aware)
 router.post('/plan', async (req, res) => {
     try {
-        const { destinations, budget, days, currentLocation, allocation } = req.body;
+        const { destinations, budget, days, currentLocation, allocation, transportDetails, preferences, homeHub } = req.body;
         
         // Fetch weather context before generating
         const weatherData = await weatherService.getDestinationsWeather(destinations);
         
-        const itinerary = await geminiService.generateItinerary(destinations, budget, days, currentLocation, allocation, weatherData);
+        const itinerary = await geminiService.generateItinerary(destinations, budget, days, currentLocation, allocation, weatherData, transportDetails, preferences, homeHub);
         res.status(200).json({ ...itinerary, weatherContext: weatherData });
     } catch (error) {
-        console.error('Error generating plan:', error);
-        res.status(500).json({ error: 'Failed to generate itinerary' });
+        console.error('--- CRITICAL ERROR IN PLANNING ---');
+        console.error(error.stack || error);
+        res.status(500).json({ error: 'Failed to generate plan. Please try again.' });
     }
 });
 
@@ -67,35 +85,52 @@ router.post('/reschedule', async (req, res) => {
     try {
         const { remainingItinerary, missedActivity, remainingBudget, currentLocation } = req.body;
         const updatedItinerary = await geminiService.rescheduleItinerary(remainingItinerary, missedActivity, remainingBudget, currentLocation);
-        res.status(200).json({ days: updatedItinerary });
+        res.status(200).json(updatedItinerary);
     } catch (error) {
         console.error('Error rescheduling:', error);
         res.status(500).json({ error: 'Failed to reschedule' });
     }
 });
 
-// 4. Save Itinerary to Firebase
+// 4. Resilient Save Itinerary (Cloud vs Local Fallback)
 router.post('/save', async (req, res) => {
     try {
         const { userId, itineraryData } = req.body;
         if (!userId || !itineraryData) {
             return res.status(400).json({ error: 'Missing userId or itineraryData' });
         }
-        
-        const docRef = await db.collection('itineraries').add({
-            userId,
-            itineraryData,
-            createdAt: new Date().toISOString()
-        });
-        
-        res.status(200).json({ success: true, id: docRef.id });
+
+        const result = await storageService.saveTrip(userId, itineraryData);
+        res.status(200).json(result);
     } catch (error) {
-        console.error('Error saving to Firebase:', error);
-        res.status(500).json({ error: 'Failed to save itinerary' });
+        console.error('--- STORAGE SAVE ERROR ---');
+        console.error('Message:', error.message);
+        res.status(500).json({ 
+            error: 'Failed to save itinerary', 
+            details: error.message 
+        });
     }
 });
 
-// 5. Currency Suggestion (Gemini + Local Rate)
+// 5. Quick Budget Classification (Proportional/AI Split)
+router.post('/classify', async (req, res) => {
+    try {
+        const { destinations, budget, daysPerCity } = req.body;
+        if (!destinations || !budget || !daysPerCity) {
+            return res.status(400).json({ error: 'Missing required parameters: destinations, budget, or daysPerCity' });
+        }
+        
+        // classifyBudget NEVER throws — it always returns heuristic on any AI failure
+        const classification = await geminiService.classifyBudget(destinations, budget, daysPerCity);
+        res.status(200).json(classification);
+    } catch (error) {
+        // This catch is a safety net only; classifyBudget itself handles its errors gracefully
+        console.error('Error classifying budget:', error);
+        res.status(200).json({});
+    }
+});
+
+// 6. Currency Suggestion (Gemini + Local Rate)
 router.get('/currency-suggestion', async (req, res) => {
     try {
         const { destination } = req.query;
@@ -118,29 +153,13 @@ router.get('/currency-suggestion', async (req, res) => {
     }
 });
 
-// 6. List Saved Trips
+// 6. List Saved Trips (Cloud + Local Merge)
 router.get('/list', async (req, res) => {
     try {
         const { userId } = req.query;
         if (!userId) return res.status(400).json({ error: 'Missing userId' });
         
-        const snapshot = await db.collection('itineraries')
-            .where('userId', '==', userId)
-            .get();
-        
-        const trips = [];
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            trips.push({
-                id: doc.id,
-                ...data.itineraryData,
-                savedAt: data.createdAt
-            });
-        });
-
-        // Sort descending by date
-        trips.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
-        
+        const trips = await storageService.listTrips(userId);
         res.status(200).json({ trips });
     } catch (error) {
         console.error('Error fetching trips:', error);

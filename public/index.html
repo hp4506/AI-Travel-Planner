@@ -231,36 +231,48 @@
                     </div>
 
                     <div class="card">
-                        <h3 class="card-title"><span>(2)</span> Your Budget</h3>
+                        <h3 class="card-title"><span>(2)</span> Select Dates</h3>
+                        <div class="input-group"><label>Start Date</label><input type="date" id="startDate" class="input-field"></div>
+                        <div class="input-group"><label>End Date</label><input type="date" id="endDate" class="input-field"></div>
+                        <div id="durationDisplay" style="margin-top:0.5rem;font-size:0.9rem;color:var(--accent);font-weight:600;">Duration: 0 days</div>
+                        <div id="perCityDaysContainer" style="display:none;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+                            <p style="font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;">Stay Duration per Destination</p>
+                            <div id="cityDaysList" style="display:flex;flex-direction:column;gap:1.25rem;">
+                                <!-- Dynamically populated by app.js -->
+                            </div>
+                        </div>
+                        <input type="hidden" id="days" value="0">
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title"><span>(3)</span> Your Budget</h3>
                         <div class="range-container">
-                            <div class="range-header"><span>INR</span><span id="budgetValue">50000</span></div>
+                            <div class="range-header">
+                                <span>INR</span>
+                                <input type="number" id="manualBudgetInput" class="budget-input-field" value="50000" min="1000" step="1000">
+                            </div>
                             <input type="range" id="budgetRange" min="10000" max="500000" step="5000" value="50000">
                             <input type="hidden" id="budget" value="50000">
                         </div>
                         <div class="input-group">
                             <label>Currency</label>
-                            <select id="currencySelect" class="input-field">
+                            <select id="currencySelect" class="input-field" disabled>
                                 <option value="INR">INR</option>
                                 <option value="USD">USD</option>
                                 <option value="EUR">EUR</option>
                             </select>
                         </div>
                         <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
-                            <p style="font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;">Currency Conversion (Live Rate)</p>
-                            <div style="display:flex;justify-content:space-between;margin-top:0.5rem;align-items:center;">
-                                <div><p style="font-size:0.8rem;color:var(--text-muted);">INR</p><p id="inrValueDisplay" style="font-size:1.2rem;font-weight:700;">50000</p></div>
-                                <i class="fas fa-exchange-alt" style="color:var(--text-muted);"></i>
-                                <div><p id="targetCurrencyLabel" style="font-size:0.8rem;color:var(--text-muted);">EUR</p><p style="font-size:1.2rem;font-weight:700;color:var(--accent);"><span id="targetCurrencySymbol">€</span><span id="eurValueDisplay">0.00</span></p></div>
+                            <p style="font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem;">Budget Breakdown &amp; Live Rates</p>
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid var(--border);margin-bottom:0.75rem;">
+                                <div><p style="font-size:0.8rem;color:var(--text-muted);margin:0;">TOTAL INR</p><p id="inrValueDisplay" style="font-size:1.1rem;font-weight:700;">50,000</p></div>
+                                <i class="fas fa-wallet" style="color:var(--accent);opacity:0.5;"></i>
+                                <div style="text-align:right;"><p style="font-size:0.8rem;color:var(--text-muted);margin:0;">CURRENCY</p><p style="font-size:1.1rem;font-weight:700;color:var(--accent);">Live Data</p></div>
+                            </div>
+                            <div id="currencyConversionList" style="display:flex;flex-direction:column;gap:0.75rem;">
+                                <!-- Dynamically populated -->
                             </div>
                         </div>
-                    </div>
-
-                    <div class="card">
-                        <h3 class="card-title"><span>(3)</span> Select Dates</h3>
-                        <div class="input-group"><label>Start Date</label><input type="date" id="startDate" class="input-field"></div>
-                        <div class="input-group"><label>End Date</label><input type="date" id="endDate" class="input-field"></div>
-                        <div id="durationDisplay" style="margin-top:0.5rem;font-size:0.9rem;color:var(--accent);font-weight:600;">Duration: 0 days</div>
-                        <input type="hidden" id="days" value="0">
                     </div>
 
                     <div class="card">
@@ -272,7 +284,22 @@
                     </div>
 
                     <div class="card">
-                        <h3 class="card-title"><span>(5)</span> Select Trip Type</h3>
+                        <h3 class="card-title"><span>(5)</span> Trip Preferences</h3>
+                        <div class="tags-container" id="preference-tags">
+                            <span class="tag pref-tag" data-pref="Adventure">Adventure</span>
+                            <span class="tag pref-tag" data-pref="Relaxation">Relaxation</span>
+                            <span class="tag pref-tag" data-pref="Food">Food</span>
+                            <span class="tag pref-tag" data-pref="Culture">Culture</span>
+                            <span class="tag pref-tag" data-pref="Nightlife">Nightlife</span>
+                            <span class="tag pref-tag" data-pref="Nature">Nature</span>
+                            <span class="tag pref-tag" data-pref="Shopping">Shopping</span>
+                            <span class="tag pref-tag" data-pref="Budget-friendly">Budget-friendly</span>
+                            <span class="tag pref-tag" data-pref="Wellness">Wellness</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title"><span>(6)</span> Select Trip Type</h3>
                         <div class="tags-container" style="gap:1rem;">
                             <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;"><input type="radio" name="tripType" value="false" checked> Domestic</label>
                             <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;"><input type="radio" name="tripType" value="true"> International</label>
@@ -290,8 +317,39 @@
                     <p id="analysis-message" style="margin:1rem 0;color:var(--text-muted);"></p>
                     <div id="breakdown-container"></div>
                     <div id="suggestion-container" style="display:none;margin-top:1.5rem;">
-                        <h3>Suggestions:</h3>
-                        <ul id="suggestion-list" style="margin-left:1.5rem;margin-top:0.5rem;"></ul>
+                        <h3 style="margin-bottom:1rem;">Lower-Budget Alternatives:</h3>
+                        <div id="alternative-cards" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));gap:1rem;">
+                            <!-- Dynamically populated clickable cards -->
+                        </div>
+                        <ul id="suggestion-list" style="margin-left:1.5rem;margin-top:1rem;color:var(--text-muted);font-size:0.9rem;"></ul>
+                    </div>
+
+                    <!-- TRANSPORT DETAILS SECTION [NEW] -->
+                    <div id="transport-details-section" style="display:none;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);">
+                        <h3 style="margin-bottom:1rem;">(Step 2) Transport Details</h3>
+                        <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1.5rem;">Help AI craft a realistic Day 1 schedule by providing your travel times.</p>
+                        
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+                            <div class="input-group">
+                                <label>Mode of Transport</label>
+                                <select id="transportMode" class="input-field">
+                                    <option value="Flight">Flight (Fastest / International)</option>
+                                    <option value="Train">Train (Recommended for Domestic)</option>
+                                    <option value="Bus">Bus</option>
+                                    <option value="Personal Car">Personal Car</option>
+                                </select>
+                            </div>
+                            <div id="timingInputs" style="display:contents;">
+                                <div class="input-group">
+                                    <label>Departure Time</label>
+                                    <input type="time" id="departureTime" class="input-field" value="08:00">
+                                </div>
+                                <div class="input-group">
+                                    <label>Arrival Time at Destination</label>
+                                    <input type="time" id="arrivalTime" class="input-field" value="14:00">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div style="display:flex;gap:1rem;margin-top:2rem;">
                         <button id="generateButton" class="cta-button" style="display:none;flex:1;">Continue with AI Planning</button>

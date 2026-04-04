@@ -1,0 +1,15 @@
+[
+  {
+    "id": "loc_1775285714667",
+    "userId": "test-user-123",
+    "savedAt": "2026-04-04T06:55:13.498Z",
+    "totalEstimatedCost": 5000,
+    "itinerary": [
+      {
+        "day": 1,
+        "city": "Dubai",
+        "blocks": {}
+      }
+    ]
+  }
+]
