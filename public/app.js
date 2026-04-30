@@ -497,8 +497,10 @@ document.getElementById('generateButton')?.addEventListener('click', async () =>
     
     const transportDetails = {
         mode: document.getElementById('transportMode')?.value || 'flight',
-        departureTime: document.getElementById('departureTime')?.value || '09:00',
-        arrivalTime: document.getElementById('arrivalTime')?.value || '18:00'
+        departureTime: document.getElementById('departureTime')?.value || '08:00',
+        arrivalTime: document.getElementById('arrivalTime')?.value || '14:00',
+        returnDepartureTime: document.getElementById('returnDepartureTime')?.value || '18:00',
+        returnArrivalTime: document.getElementById('returnArrivalTime')?.value || '23:30'
     };
 
     const dests = document.getElementById('destinations').value.split(',').map(d => d.trim()).filter(d => d);

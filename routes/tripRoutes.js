@@ -32,23 +32,20 @@ router.post('/analyze', async (req, res) => {
         // Enrich the analysis with currency conversions for each city
         if (analysis.cityBreakdown) {
             for (let i = 0; i < analysis.cityBreakdown.length; i++) {
-                const cityInfo = analysis.cityBreakdown[i];
-                const dest = cityInfo.city;
-                
-                // Get currency info for this specific city
-                const currencyInfo = currencyService.getCurrencyInfo(dest);
-                
-                if (currencyInfo.code !== 'INR') {
-                    // Convert the AI's INR allocation for this city to its local currency
-                    const conversion = await currencyService.convertToLocalCurrency(cityInfo.allocationINR || cityInfo.totalMin, dest);
+                try {
+                    const cityInfo = analysis.cityBreakdown[i];
+                    const dest = cityInfo.city;
+                    const currencyInfo = currencyService.getCurrencyInfo(dest);
+                    
+                    const conversion = await currencyService.convertToLocalCurrency(cityInfo.allocationINR || cityInfo.totalMin || 0, dest);
                     cityInfo.localCurrency = {
-                        symbol: conversion.symbol,
-                        code: conversion.currency,
-                        rate: conversion.rate,
-                        amount: conversion.amount
+                        symbol: conversion.symbol || currencyInfo.symbol || '₹',
+                        code: conversion.currency || currencyInfo.code || 'INR',
+                        rate: conversion.rate || 1,
+                        amount: conversion.amount || cityInfo.allocationINR || 0
                     };
-                } else {
-                    cityInfo.localCurrency = { symbol: '₹', code: 'INR', rate: 1, amount: cityInfo.allocationINR || cityInfo.totalMin };
+                } catch (innerErr) {
+                    console.warn('[Analysis Enrichment] Skipping currency conversion for a city due to error:', innerErr.message);
                 }
             }
         }

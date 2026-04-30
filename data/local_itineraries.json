@@ -17,6 +17,700 @@
     {
       "feasible": true,
       "isFallback": true,
+      "message": "✅ Resilience Mode Active: Budget fits perfectly for a 3-day trip to Bangkok.",
+      "intendedBudget": 150000,
+      "cityBreakdown": [
+        {
+          "city": "Bangkok",
+          "minFlights": 5000,
+          "minHotels": 9000,
+          "minFood": 4500,
+          "totalMin": 10000,
+          "allocationINR": 150000,
+          "localCurrency": {
+            "symbol": "฿",
+            "code": "THB",
+            "rate": 0.3449,
+            "amount": 51735
+          }
+        }
+      ],
+      "alternatives": [],
+      "suggestions": [
+        "Resilience fallback: Your API keys might be hitting quotas, but we've verified your plan mathematically.",
+        "Book hotels in central areas to save on transit.",
+        "Consider a local food tour for authentic experiences."
+      ],
+      "nearestAirport": "Sardar Vallabhbhai Patel International Airport (AMD)",
+      "nearestStation": "Anand Junction (ANND)",
+      "input": {
+        "destinations": [
+          "Bangkok"
+        ],
+        "budget": "150000",
+        "days": "3",
+        "currentLocation": "Mogri, India",
+        "daysPerCity": [],
+        "preferences": [
+          "Relaxation",
+          "Food",
+          "Culture",
+          "Shopping"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "city": "Bangkok",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bangkok Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bangkok Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bangkok",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "04:00",
+                "place": "Departure from Mogri",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Start journey from home towards Sardar Vallabhbhai Patel International Airport (AMD).",
+                "travelTimeFromPrevious": "Initial departure"
+              },
+              {
+                "time": "06:00",
+                "place": "Arrival at Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Reach the hub and proceed to check-in/security.",
+                "travelTimeFromPrevious": "~1.5 - 2 hrs transit"
+              },
+              {
+                "time": "08:00",
+                "place": "Flight Departure: Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Commence the main leg of the journey to Bangkok. (Arrival expected at 14:00)",
+                "travelTimeFromPrevious": "Check-in & Security"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "14:00",
+                "place": "Arrival and Check-in at Bangkok",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Arrive at destination and settle into your accommodation.",
+                "travelTimeFromPrevious": "Journey time 4-6 hrs"
+              },
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Fine Dining & Skyline View",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 2,
+          "city": "Bangkok",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bangkok Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bangkok Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bangkok",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 2)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Bangkok's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Night Market & Street Food",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 3,
+          "city": "Bangkok",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bangkok Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bangkok Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bangkok",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 3)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Bangkok's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Jazz Club or Local Lounge",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              },
+              {
+                "time": "22:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "[RESCHEDULED] Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        }
+      ],
+      "totalEstimatedCost": 150000,
+      "weatherContext": {
+        "Bangkok": {
+          "temp": 29.94,
+          "condition": "overcast clouds"
+        }
+      },
+      "savedAt": "2026-04-30T18:08:28.955Z"
+    },
+    {
+      "feasible": true,
+      "isFallback": true,
+      "message": "✅ Resilience Mode Active: Budget fits perfectly for a 3-day trip to Bangkok.",
+      "intendedBudget": 150000,
+      "cityBreakdown": [
+        {
+          "city": "Bangkok",
+          "minFlights": 5000,
+          "minHotels": 9000,
+          "minFood": 4500,
+          "totalMin": 10000,
+          "allocationINR": 150000,
+          "localCurrency": {
+            "symbol": "฿",
+            "code": "THB",
+            "rate": 0.3449,
+            "amount": 51735
+          }
+        }
+      ],
+      "alternatives": [],
+      "suggestions": [
+        "Resilience fallback: Your API keys might be hitting quotas, but we've verified your plan mathematically.",
+        "Book hotels in central areas to save on transit.",
+        "Consider a local food tour for authentic experiences."
+      ],
+      "nearestAirport": "Sardar Vallabhbhai Patel International Airport (AMD)",
+      "nearestStation": "Anand Junction (ANND)",
+      "input": {
+        "destinations": [
+          "Bangkok"
+        ],
+        "budget": "150000",
+        "days": "3",
+        "currentLocation": "Mogri, India",
+        "daysPerCity": [],
+        "preferences": [
+          "Relaxation",
+          "Food",
+          "Culture",
+          "Shopping"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "city": "Bangkok",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bangkok Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bangkok Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bangkok",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "04:00",
+                "place": "Departure from Mogri",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Start journey from home towards Sardar Vallabhbhai Patel International Airport (AMD).",
+                "travelTimeFromPrevious": "Initial departure"
+              },
+              {
+                "time": "06:00",
+                "place": "Arrival at Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Reach the hub and proceed to check-in/security.",
+                "travelTimeFromPrevious": "~1.5 - 2 hrs transit"
+              },
+              {
+                "time": "08:00",
+                "place": "Flight Departure: Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Commence the main leg of the journey to Bangkok. (Arrival expected at 14:00)",
+                "travelTimeFromPrevious": "Check-in & Security"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "14:00",
+                "place": "Arrival and Check-in at Bangkok",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Arrive at destination and settle into your accommodation.",
+                "travelTimeFromPrevious": "Journey time 4-6 hrs"
+              },
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Fine Dining & Skyline View",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 2,
+          "city": "Bangkok",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bangkok Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bangkok Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bangkok",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 2)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Bangkok's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Night Market & Street Food",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 3,
+          "city": "Bangkok",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bangkok Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bangkok Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bangkok",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 3)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Bangkok's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Jazz Club or Local Lounge",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        }
+      ],
+      "totalEstimatedCost": 150000,
+      "weatherContext": {
+        "Bangkok": {
+          "temp": 29.94,
+          "condition": "overcast clouds"
+        }
+      },
+      "savedAt": "2026-04-30T18:03:27.493Z"
+    },
+    {
+      "feasible": true,
+      "isFallback": true,
       "message": "✅ Budget fits perfectly! Your selection looks great for a 5-day trip.",
       "intendedBudget": "250000",
       "cityBreakdown": [

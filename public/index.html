@@ -329,7 +329,7 @@
                         <h3 style="margin-bottom:1rem;">(Step 2) Transport Details</h3>
                         <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1.5rem;">Help AI craft a realistic Day 1 schedule by providing your travel times.</p>
                         
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:1.5rem;">
                             <div class="input-group">
                                 <label>Mode of Transport</label>
                                 <select id="transportMode" class="input-field">
@@ -339,15 +339,21 @@
                                     <option value="Personal Car">Personal Car</option>
                                 </select>
                             </div>
-                            <div id="timingInputs" style="display:contents;">
-                                <div class="input-group">
-                                    <label>Departure Time</label>
-                                    <input type="time" id="departureTime" class="input-field" value="08:00">
-                                </div>
-                                <div class="input-group">
-                                    <label>Arrival Time at Destination</label>
-                                    <input type="time" id="arrivalTime" class="input-field" value="14:00">
-                                </div>
+                            <div class="input-group">
+                                <label>Outbound Departure Time</label>
+                                <input type="time" id="departureTime" class="input-field" value="08:00">
+                            </div>
+                            <div class="input-group">
+                                <label>Outbound Arrival at City</label>
+                                <input type="time" id="arrivalTime" class="input-field" value="14:00">
+                            </div>
+                            <div class="input-group">
+                                <label>Return Departure Time (Last Day)</label>
+                                <input type="time" id="returnDepartureTime" class="input-field" value="18:00">
+                            </div>
+                            <div class="input-group">
+                                <label>Return Arrival at Home</label>
+                                <input type="time" id="returnArrivalTime" class="input-field" value="23:30">
                             </div>
                         </div>
                     </div>

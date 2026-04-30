@@ -221,21 +221,24 @@ const convertToLocalCurrency = async (amountINR, destination) => {
         const targetCurrency = info.code;
         
         const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`);
-        const rate = response.data.conversion_rates[targetCurrency];
         
-        if (rate) {
-            const converted = amountINR * rate;
-            return {
-                amount: converted,
-                currency: targetCurrency,
-                symbol: info.symbol,
-                rate: rate
-            };
+        if (response.data && response.data.conversion_rates) {
+            const rate = response.data.conversion_rates[targetCurrency];
+            if (rate) {
+                const converted = amountINR * rate;
+                return {
+                    amount: converted,
+                    currency: targetCurrency,
+                    symbol: info.symbol,
+                    rate: rate
+                };
+            }
         }
         return { amount: amountINR, currency: 'INR', symbol: '₹', rate: 1 };
     } catch (error) {
         console.error('Currency conversion error:', error.message);
-        return { amount: amountINR, currency: 'INR', rate: 1 };
+        const info = getCurrencyInfo(destination);
+        return { amount: amountINR, currency: info.code || 'INR', symbol: info.symbol || '₹', rate: 1 };
     }
 };
 

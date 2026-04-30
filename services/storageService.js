@@ -19,13 +19,13 @@ class StorageService {
         let savedToCloud = false;
         let error = null;
 
+        const timestamp = new Date().toISOString();
+        const finalData = { ...tripData, savedAt: timestamp };
+
         // Try Cloud Save (Firestore)
         try {
             const docRef = db.collection('trips').doc(userId).collection('user_trips').doc();
-            await docRef.set({
-                ...tripData,
-                savedAt: new Date().toISOString()
-            });
+            await docRef.set(finalData);
             savedToCloud = true;
             console.log('[STORAGE] Successfully saved to Cloud (Firestore).');
         } catch (err) {
@@ -35,7 +35,7 @@ class StorageService {
 
         // Always Back up and fallback to Local Save (JSON)
         try {
-            await this.saveToLocalBackup(userId, tripData);
+            await this.saveToLocalBackup(userId, finalData);
             console.log('[STORAGE] Successfully synchronized to Local Backup.');
         } catch (localErr) {
             console.error('[STORAGE] Local Backup failed:', localErr.message);
@@ -75,13 +75,24 @@ class StorageService {
             const localData = await this.readLocalBackup();
             const userLocalTrps = localData[userId] || [];
             
-            // Deduplicate by simple destination/date check if needed
+            // Deduplicate by comparing destinations and duration (ignoring time if they match exactly)
             userLocalTrps.forEach(localTrip => {
-                const alreadyExists = results.some(cloudTrip => 
-                    cloudTrip.destination === localTrip.destination && cloudTrip.startDate === localTrip.startDate
-                );
+                const alreadyExists = results.some(cloudTrip => {
+                    const cDests = JSON.stringify((cloudTrip.input?.destinations || []).map(d => d.trim().toLowerCase()).sort());
+                    const lDests = JSON.stringify((localTrip.input?.destinations || []).map(d => d.trim().toLowerCase()).sort());
+                    const cDays = cloudTrip.input?.days;
+                    const lDays = localTrip.input?.days;
+                    
+                    if (cDests === lDests && cDays === lDays) {
+                        const cTime = new Date(cloudTrip.savedAt || 0).getTime();
+                        const lTime = new Date(localTrip.savedAt || 0).getTime();
+                        // If destinations and duration match, treat as duplicate if saved within 24 hours
+                        return Math.abs(cTime - lTime) < 86400000; 
+                    }
+                    return false;
+                });
                 if (!alreadyExists) {
-                    results.unshift({ ...localTrip, id: `local-${Date.now()}`, mode: 'local' });
+                    results.unshift({ ...localTrip, id: `local-${Date.now()}-${Math.random()}`, mode: 'local' });
                 }
             });
         } catch (localErr) {
@@ -97,7 +108,7 @@ class StorageService {
         if (!data[userId]) data[userId] = [];
         
         // Add to history (limit to last 20 for space)
-        data[userId].unshift({ ...tripData, savedAt: new Date().toISOString() });
+        data[userId].unshift(tripData);
         data[userId] = data[userId].slice(0, 20);
 
         await fs.writeFile(LOCAL_DATA_PATH, JSON.stringify(data, null, 2), 'utf8');
