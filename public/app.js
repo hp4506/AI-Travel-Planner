@@ -1,6 +1,8 @@
 import { getCurrentUserId } from './auth.js';
 
 let currentTripData = {};
+let allSavedTrips = []; // Track all fetched trips for dashboard interaction
+
 
 // ----------------------------------------------------------------
 // COST ANALYSIS HEURISTICS
@@ -80,6 +82,11 @@ function switchView(viewName) {
 
     // Trigger view-specific actions
     if (viewName === 'dashboard') loadSavedTrips();
+    if (viewName === 'new-plan') {
+        document.querySelectorAll('.dashboard-content, .cta-area').forEach(d => d.style.display = '');
+        document.getElementById('analysis-section').style.display = 'none';
+        document.getElementById('itinerary-section').style.display = 'none';
+    }
     if (viewName === 'account') populateAccount();
 }
 
@@ -149,6 +156,9 @@ async function loadSavedTrips() {
         isDemoMode = true;
     }
 
+    allSavedTrips = trips; // Store for interaction
+
+
     if (trips.length === 0) {
         listEl.innerHTML = `
             <div class="no-trips-msg">
@@ -169,7 +179,7 @@ async function loadSavedTrips() {
         const savedAt = trip.savedAt ? new Date(trip.savedAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
 
         return `
-            <div class="trip-card ${trip.isDemo ? 'demo-card' : ''}">
+            <div class="trip-card ${trip.isDemo ? 'demo-card' : ''}" onclick="openTrip('${trip.id}')">
                 ${trip.isDemo ? '<div class="demo-badge">PREVIEW DATA</div>' : ''}
                 <div class="trip-card-dest"><i class="fas fa-plane"></i> ${dests}</div>
                 <div class="trip-card-meta">
@@ -179,6 +189,7 @@ async function loadSavedTrips() {
                 </div>
                 <div class="trip-card-cost">Est. Cost: ${cost}</div>
             </div>`;
+
     }).join('');
 
     if (isDemoMode) {
@@ -194,6 +205,27 @@ async function loadSavedTrips() {
         if (count) count.textContent = isDemoMode ? '0' : document.querySelectorAll('.trip-card').length;
     } catch (_) {}
 }
+
+/**
+ * Opens a specific trip from the dashboard
+ */
+window.openTrip = function(tripId) {
+    const trip = allSavedTrips.find(t => t.id === tripId);
+    if (!trip) return;
+
+    // Set as current trip
+    currentTripData = trip;
+
+    // Switch to new-plan view (which contains the itinerary section)
+    switchView('new-plan');
+
+    // Hide any existing form/analysis and render the itinerary
+    setTimeout(() => {
+        renderItinerary(trip);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+};
+
 
 // ----------------------------------------------------------------
 // ACCOUNT: Populate user information
@@ -301,9 +333,12 @@ document.getElementById('analyzeButton')?.addEventListener('click', async () => 
 
     showLoading(true);
     try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 30000);
         const response = await fetch('/api/trips/analyze', { 
             method:'POST', 
             headers:{'Content-Type':'application/json'}, 
+            signal: controller.signal,
             body: JSON.stringify({ 
                 destinations, 
                 budget, 
@@ -314,6 +349,7 @@ document.getElementById('analyzeButton')?.addEventListener('click', async () => 
                 preferences: preferences.length ? preferences : null
             }) 
         });
+        clearTimeout(timeout);
         if (!response.ok) {
             const errData = await response.json().catch(() => ({}));
             throw new Error(errData.error || `Server ${response.status}`);
@@ -326,7 +362,13 @@ document.getElementById('analyzeButton')?.addEventListener('click', async () => 
             nearestStation: data.nearestStation
         };
         renderAnalysis(data);
-    } catch (e) { alert('Analysis failed: ' + e.message); }
+    } catch (e) {
+        if (e.name === 'AbortError') {
+            alert('Analysis timed out. The server may be busy — please try again.');
+        } else {
+            alert('Analysis failed: ' + e.message);
+        }
+    }
     finally { showLoading(false); }
 });
 
@@ -467,9 +509,12 @@ document.getElementById('generateButton')?.addEventListener('click', async () =>
 
     showLoading(true, "AI is crafting your time-aware itinerary...");
     try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 45000);
         const response = await fetch('/api/trips/plan', { 
             method:'POST', 
             headers:{'Content-Type':'application/json'}, 
+            signal: controller.signal,
             body: JSON.stringify({ 
                 destinations: dests, 
                 budget, 
@@ -484,6 +529,7 @@ document.getElementById('generateButton')?.addEventListener('click', async () =>
                 homeHub
             }) 
         });
+        clearTimeout(timeout);
         if (!response.ok) {
             const errData = await response.json().catch(() => ({}));
             throw new Error(errData.error || `Server error ${response.status}`);
@@ -512,25 +558,42 @@ document.getElementById('restartButton')?.addEventListener('click', () => locati
 // RENDER ITINERARY
 // ----------------------------------------------------------------
 function renderItinerary(data) {
+    // Hide form elements and analysis section
+    document.querySelectorAll('.dashboard-content, .cta-area').forEach(d => d.style.display = 'none');
     document.getElementById('analysis-section').style.display = 'none';
+    
     const section = document.getElementById('itinerary-section');
     section.style.display = 'block';
 
-    // ── Safe currency symbol resolution ──────────────────────────
-    // Priority: cityBreakdown localCurrency → currencyContext → INR fallback
-    let symbol = '₹';
+
+    // ── Currency conversion setup ─────────────────────────────────
+    // All internal costs are in INR (the user's input currency).
+    // For international destinations, we convert & show local currency equivalent.
+    let localCurrencyInfo = null; // { symbol, code, rate }
     try {
         const firstCity = (data.cityBreakdown || [])[0];
-        if (firstCity?.localCurrency?.code && firstCity.localCurrency.code !== 'INR') {
-            symbol = firstCity.localCurrency.symbol || (firstCity.localCurrency.code + ' ');
-        } else if (data.currencyContext?.currency && data.currencyContext.currency !== 'INR') {
-            symbol = data.currencyContext.symbol || (data.currencyContext.currency + ' ');
+        if (firstCity?.localCurrency?.code && firstCity.localCurrency.code !== 'INR' && firstCity.localCurrency.rate) {
+            localCurrencyInfo = {
+                symbol: firstCity.localCurrency.symbol || (firstCity.localCurrency.code + ' '),
+                code: firstCity.localCurrency.code,
+                rate: firstCity.localCurrency.rate
+            };
         }
-    } catch (_) { symbol = '₹'; }
+    } catch (_) {}
 
     // ── Safe helpers ──────────────────────────────────────────────
-    const fmt  = (n) => (typeof n === 'number' ? n.toLocaleString() : '—');
-    const cost = (n) => `${symbol}${fmt(n)}`;
+    const fmt  = (n) => (typeof n === 'number' ? n.toLocaleString('en-IN') : '—');
+    const fmtLocal = (n) => (typeof n === 'number' ? Math.round(n).toLocaleString() : '—');
+    // Primary: always show INR. Secondary: show local currency equivalent if applicable.
+    const cost = (n) => {
+        if (typeof n !== 'number') return '₹—';
+        const inrStr = `₹${fmt(n)}`;
+        if (localCurrencyInfo && localCurrencyInfo.rate) {
+            const localAmt = Math.round(n * localCurrencyInfo.rate);
+            return `${inrStr} <span style="font-size:0.75em;color:var(--text-muted);">(≈ ${localCurrencyInfo.symbol}${fmtLocal(localAmt)})</span>`;
+        }
+        return inrStr;
+    };
 
     // ── Weather banner ────────────────────────────────────────────
     let weatherHtml = '';
@@ -555,19 +618,32 @@ function renderItinerary(data) {
     const categoryColors = { Food: '#f59e0b', Transport: '#3b82f6', Activity: '#10b981' };
 
     const daysHtml = itinerary.map(day => {
-        const hotel = day.hotelSuggestion;
-        const hotelHtml = hotel ? `
-            <div style="background:rgba(255,107,157,0.1);padding:1rem;border-radius:12px;margin-bottom:1.5rem;border:1px solid var(--accent);">
-                <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:0.5rem;">
-                    <div>
-                        <h4 style="color:var(--accent);margin:0;font-size:1rem;">
-                            <i class="fas fa-hotel" style="margin-right:6px;"></i>${hotel.name || 'Recommended Hotel'}
-                        </h4>
-                        <p style="font-size:0.8rem;color:var(--text-muted);margin:0.25rem 0;">${hotel.description || ''}</p>
-                    </div>
-                    <div style="font-weight:700;color:var(--accent);white-space:nowrap;">
-                        ${cost(hotel.estimatedCostPerNight)}<small style="font-weight:400;">/night</small>
-                    </div>
+        // Support both old single-hotel and new multi-hotel format
+        const hotelOptions = day.hotelOptions || (day.hotelSuggestion ? [day.hotelSuggestion] : []);
+        const tierColors = { 'Budget': '#10b981', 'Mid-range': '#3b82f6', 'Premium': '#f59e0b' };
+
+        const hotelHtml = hotelOptions.length > 0 ? `
+            <div style="margin-bottom:1.5rem;">
+                <h4 style="font-size:0.78rem;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem;letter-spacing:1.5px;display:flex;align-items:center;gap:6px;">
+                    <i class="fas fa-hotel"></i> Accommodation Options
+                </h4>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:0.75rem;">
+                    ${hotelOptions.map(h => {
+                        const tierColor = tierColors[h.tier] || 'var(--accent)';
+                        return `
+                        <div style="background:rgba(255,255,255,0.03);padding:1rem;border-radius:12px;border:1px solid ${tierColor}33;transition:border 0.2s;"
+                             onmouseover="this.style.border='1px solid ${tierColor}'"
+                             onmouseout="this.style.border='1px solid ${tierColor}33'">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                                <span style="font-weight:700;font-size:0.9rem;color:var(--text);">${h.name || 'Hotel'}</span>
+                                ${h.tier ? `<span style="font-size:0.6rem;padding:2px 8px;border-radius:100px;background:${tierColor}22;color:${tierColor};border:1px solid ${tierColor};">${h.tier}</span>` : ''}
+                            </div>
+                            <p style="font-size:0.75rem;color:var(--text-muted);margin:0 0 0.5rem;">${h.description || ''}</p>
+                            <div style="font-weight:700;color:var(--accent);font-size:0.95rem;">
+                                ${cost(h.estimatedCostPerNight)}<small style="font-weight:400;">/night</small>
+                            </div>
+                        </div>`;
+                    }).join('')}
                 </div>
             </div>` : '';
 
@@ -596,7 +672,10 @@ function renderItinerary(data) {
                             <span style="font-family:monospace;color:var(--accent);font-weight:700;min-width:60px;padding-top:2px;">${act.time || '--:--'}</span>
                             <div style="flex:1;">
                                 <div style="display:flex;justify-content:space-between;align-items:start;gap:0.5rem;flex-wrap:wrap;">
-                                    <strong style="font-size:0.95rem;">${act.place || 'Activity'}</strong>
+                                    <strong style="font-size:0.95rem;">
+                                        ${act.place || 'Activity'}
+                                        ${(act.description || '').includes('[RESCHEDULED]') ? `<span style="font-size:0.55rem;background:var(--accent)22;color:var(--accent);padding:1px 5px;border-radius:4px;border:1px solid var(--accent)44;text-transform:uppercase;margin-left:6px;vertical-align:middle;">Rescheduled</span>` : ''}
+                                    </strong>
                                     <span style="font-size:0.68rem;padding:2px 10px;border-radius:100px;background:${catColor}22;color:${catColor};border:1px solid ${catColor};white-space:nowrap;">
                                         ${act.category || 'Activity'}
                                     </span>
@@ -687,19 +766,77 @@ function renderItinerary(data) {
 // MARK MISSED
 // ----------------------------------------------------------------
 window.markMissed = async (day, blockName, idx) => {
+    if (!currentTripData || !currentTripData.itinerary) {
+        alert('No active itinerary found to reschedule.');
+        return;
+    }
+
     const dayData = currentTripData.itinerary.find(d => d.day === day);
+    if (!dayData || !dayData.blocks || !dayData.blocks[blockName]) return;
+
     const missedActivity = dayData.blocks[blockName][idx];
-    const remainingItinerary = currentTripData.itinerary.filter(d => d.day >= day);
-    showLoading(true);
-    try {
-        const res = await fetch('/api/trips/reschedule', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ remainingItinerary, missedActivity, remainingBudget:currentTripData.input.budget, currentLocation:currentTripData.input.currentLocation }) });
-        if (!res.ok) throw new Error('Reschedule failed');
-        const data = await res.json();
-        currentTripData.itinerary = [...currentTripData.itinerary.filter(d => d.day < day), ...data.days];
+    if (!missedActivity) return;
+
+    const name = (missedActivity.place || '').toLowerCase();
+    const isGenericMeal = (missedActivity.category === 'Food') && 
+                          (name.includes('breakfast') || name.includes('lunch') || name.includes('dinner')) &&
+                          !(name.includes('cruise') || name.includes('show') || name.includes('class') || name.includes('tour'));
+
+    if (isGenericMeal) {
+        // Just remove it from the local view and re-render
+        dayData.blocks[blockName].splice(idx, 1);
         renderItinerary(currentTripData);
-    } catch { alert('Rescheduling failed.'); }
+        alert('🍽️ Meal skipped. Generic meals aren\'t rescheduled to the next day.');
+        return;
+    }
+
+    // Filter to only future days (current day and onwards)
+    const remainingItinerary = JSON.parse(JSON.stringify(currentTripData.itinerary.filter(d => d.day >= day)));
+    
+    // Crucial: Remove the missed activity from its original spot in the data we send to the AI
+    const targetDay = remainingItinerary.find(d => d.day === day);
+    if (targetDay && targetDay.blocks && targetDay.blocks[blockName]) {
+        targetDay.blocks[blockName].splice(idx, 1);
+        // Decrease budget used for that day since the activity is "gone" from there
+        targetDay.dailyBudgetUsed = (targetDay.dailyBudgetUsed || 0) - (missedActivity.cost || 0);
+    }
+    
+    showLoading(true, "AI is intelligently rescheduling your trip...");
+    try {
+        const res = await fetch('/api/trips/reschedule', { 
+            method:'POST', 
+            headers:{'Content-Type':'application/json'}, 
+            body: JSON.stringify({ 
+                remainingItinerary, 
+                missedActivity, 
+                remainingBudget: (currentTripData.input ? currentTripData.input.budget : currentTripData.totalEstimatedCost) || 0, 
+                currentLocation: (currentTripData.input ? currentTripData.input.currentLocation : 'Unknown City')
+            }) 
+        });
+        
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.error || `Server error ${res.status}`);
+        }
+        
+        const data = await res.json();
+        if (!data.days) throw new Error('Invalid rescheduling response from AI');
+
+        // Merge updated days back into the itinerary
+        currentTripData.itinerary = [
+            ...currentTripData.itinerary.filter(d => d.day < day), 
+            ...data.days
+        ];
+        
+        renderItinerary(currentTripData);
+        alert('✨ Activity rescheduled! We\'ve moved it to a better time in your remaining schedule.');
+    } catch (e) { 
+        console.error('--- RESCHEDULE FAILED ---', e);
+        alert('Rescheduling failed: ' + e.message); 
+    }
     finally { showLoading(false); }
 };
+
 
 // ----------------------------------------------------------------
 // DATE PICKER

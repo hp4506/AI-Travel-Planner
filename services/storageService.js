@@ -43,10 +43,11 @@ class StorageService {
 
         if (!savedToCloud) {
             console.warn('[STORAGE] OPERATING IN OFFLINE/FALLBACK MODE. Data is safe but local-only.');
-            return { success: true, mode: 'local', warning: 'Cloud sync failed. Data saved locally.' };
+            const localId = 'loc_' + Date.now();
+            return { success: true, id: localId, mode: 'local', warning: 'Cloud sync failed. Data saved locally.' };
         }
 
-        return { success: true, mode: 'cloud' };
+        return { success: true, id: 'cloud_' + Date.now(), mode: 'cloud' };
     }
 
     /**
@@ -105,7 +106,13 @@ class StorageService {
     async readLocalBackup() {
         try {
             const content = await fs.readFile(LOCAL_DATA_PATH, 'utf8');
-            return JSON.parse(content);
+            const parsed = JSON.parse(content);
+            // Guard: if the file was corrupted to an array, reset to object
+            if (Array.isArray(parsed) || typeof parsed !== 'object' || parsed === null) {
+                console.warn('[STORAGE] Local backup was corrupt (not an object). Resetting.');
+                return {};
+            }
+            return parsed;
         } catch (err) {
             // Ensure data directory exists
             await fs.mkdir(path.dirname(LOCAL_DATA_PATH), { recursive: true }).catch(() => {});

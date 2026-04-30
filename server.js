@@ -5,6 +5,17 @@ const tripRoutes = require('./routes/tripRoutes');
 
 dotenv.config();
 
+// ── CRASH PROTECTION ──────────────────────────────────────────────
+// Prevent the Node process from dying on unhandled errors.
+// This is critical because node --watch restarts the server on crash,
+// which kills in-flight HTTP requests and causes "Failed to fetch".
+process.on('uncaughtException', (err) => {
+    console.error('[CRASH GUARD] Uncaught Exception:', err.message || err);
+});
+process.on('unhandledRejection', (reason) => {
+    console.error('[CRASH GUARD] Unhandled Rejection:', reason?.message || reason);
+});
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -28,7 +39,15 @@ app.get('/api/config/firebase', (req, res) => {
     });
 });
 
+// ── EXPRESS ERROR MIDDLEWARE (must be AFTER all routes) ───────────
+// Catches any errors thrown inside async route handlers (Express 5+)
+app.use((err, req, res, _next) => {
+    console.error('[Express Error]', err.message || err);
+    if (!res.headersSent) {
+        res.status(500).json({ error: 'Internal server error. Please try again.' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
-

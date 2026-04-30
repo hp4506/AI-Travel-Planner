@@ -1,15 +1,1078 @@
-[
-  {
-    "id": "loc_1775285714667",
-    "userId": "test-user-123",
-    "savedAt": "2026-04-04T06:55:13.498Z",
-    "totalEstimatedCost": 5000,
-    "itinerary": [
-      {
-        "day": 1,
-        "city": "Dubai",
-        "blocks": {}
-      }
-    ]
-  }
-]
+{
+  "testuid": [
+    {
+      "input": {
+        "destinations": [
+          "Dubai"
+        ],
+        "days": 3,
+        "budget": 100000,
+        "currentLocation": "Mumbai"
+      },
+      "totalEstimatedCost": 95000,
+      "savedAt": "2026-04-07T05:46:41.312Z"
+    }
+  ],
+  "T1goK1oovUP9ZirIJYAd1LSTYBg2": [
+    {
+      "feasible": true,
+      "isFallback": true,
+      "message": "✅ Budget fits perfectly! Your selection looks great for a 5-day trip.",
+      "intendedBudget": "250000",
+      "cityBreakdown": [
+        {
+          "city": "Dubai",
+          "minFlights": 5000,
+          "minHotels": 15000,
+          "minFood": 7500,
+          "totalMin": 10000,
+          "allocationINR": 250000,
+          "localCurrency": {
+            "symbol": "AED",
+            "code": "AED",
+            "rate": 0.03938,
+            "amount": 9845
+          }
+        }
+      ],
+      "alternatives": [],
+      "suggestions": [
+        "Book hotels in central areas to save on transit.",
+        "Consider a local food tour for authentic experiences.",
+        "Keep digital copies of all your travel documents."
+      ],
+      "nearestAirport": "Sardar Vallabhbhai Patel International Airport (AMD)",
+      "nearestStation": "Anand Junction (ANND)",
+      "input": {
+        "destinations": [
+          "Dubai"
+        ],
+        "budget": "250000",
+        "days": "5",
+        "currentLocation": "Mogri, India",
+        "daysPerCity": [],
+        "preferences": [
+          "Relaxation",
+          "Food",
+          "Culture"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "04:00",
+                "place": "Departure from Mogri",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Start journey from home towards Sardar Vallabhbhai Patel International Airport (AMD).",
+                "travelTimeFromPrevious": "Initial departure"
+              },
+              {
+                "time": "06:00",
+                "place": "Arrival at Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Reach the hub and proceed to check-in/security.",
+                "travelTimeFromPrevious": "~1.5 - 2 hrs transit"
+              },
+              {
+                "time": "08:00",
+                "place": "Flight Departure: Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Commence the main leg of the journey to Dubai. (Arrival expected at 14:00)",
+                "travelTimeFromPrevious": "Check-in & Security"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "14:00",
+                "place": "Arrival and Check-in at Dubai",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Arrive at destination and settle into your accommodation.",
+                "travelTimeFromPrevious": "Journey time 4-6 hrs"
+              },
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Dubai Mall & Aquarium (Explore Underwater Zoo)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Watch the Dubai Fountain Show (Runs every 30 mins: 6:00 PM - 11:00 PM)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Dhow Cruise dinner at Dubai Marina",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 2,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 2)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Old Dubai & Gold Souk (Taking Abra boat cross the creek)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Dubai's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Museum of the Future (Calligraphy Architecture)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Global Village Cultural Pavilions (Opens at 4:00 PM)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Dinner at Jumeirah Beach Residence (The Walk)",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 3,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 3)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "View from The Palm & Atlantis Park",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Dubai's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Ski Dubai Snow Park (Mall of the Emirates)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Dinner Cruise with skyline view",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Yacht Tour near Ain Dubai",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 4,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 4)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Visit Burj Khalifa Level 124/125 (Pre-booked)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Dubai's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Dubai Mall & Aquarium (Explore Underwater Zoo)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Watch the Dubai Fountain Show (Runs every 30 mins: 6:00 PM - 11:00 PM)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Dhow Cruise dinner at Dubai Marina",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 5,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 5)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Old Dubai & Gold Souk (Taking Abra boat cross the creek)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Dubai's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Museum of the Future (Calligraphy Architecture)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Global Village Cultural Pavilions (Opens at 4:00 PM)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Dinner at Jumeirah Beach Residence (The Walk)",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        }
+      ],
+      "totalEstimatedCost": 250000,
+      "weatherContext": {
+        "Dubai": {
+          "temp": 23.44,
+          "condition": "broken clouds"
+        }
+      },
+      "savedAt": "2026-04-07T05:54:54.978Z"
+    },
+    {
+      "feasible": true,
+      "isFallback": true,
+      "message": "✅ Budget fits perfectly! Your selection looks great for a 5-day trip.",
+      "intendedBudget": "250000",
+      "cityBreakdown": [
+        {
+          "city": "Dubai",
+          "minFlights": 5000,
+          "minHotels": 15000,
+          "minFood": 7500,
+          "totalMin": 10000,
+          "allocationINR": 250000,
+          "localCurrency": {
+            "symbol": "AED",
+            "code": "AED",
+            "rate": 0.03938,
+            "amount": 9845
+          }
+        }
+      ],
+      "alternatives": [],
+      "suggestions": [
+        "Book hotels in central areas to save on transit.",
+        "Consider a local food tour for authentic experiences.",
+        "Keep digital copies of all your travel documents."
+      ],
+      "nearestAirport": "Sardar Vallabhbhai Patel International Airport (AMD)",
+      "nearestStation": "Anand Junction (ANND)",
+      "input": {
+        "destinations": [
+          "Dubai"
+        ],
+        "budget": "250000",
+        "days": "5",
+        "currentLocation": "Mogri, India",
+        "daysPerCity": [],
+        "preferences": [
+          "Relaxation",
+          "Food",
+          "Culture"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "04:00",
+                "place": "Departure from Mogri",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Start journey from home towards Sardar Vallabhbhai Patel International Airport (AMD).",
+                "travelTimeFromPrevious": "Initial departure"
+              },
+              {
+                "time": "06:00",
+                "place": "Arrival at Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Reach the hub and proceed to check-in/security.",
+                "travelTimeFromPrevious": "~1.5 - 2 hrs transit"
+              },
+              {
+                "time": "08:00",
+                "place": "Flight Departure: Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Commence the main leg of the journey to Dubai. (Arrival expected at 14:00)",
+                "travelTimeFromPrevious": "Check-in & Security"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "14:00",
+                "place": "Arrival and Check-in at Dubai",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Arrive at destination and settle into your accommodation.",
+                "travelTimeFromPrevious": "Journey time 4-6 hrs"
+              },
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Dubai Mall & Aquarium (Explore Underwater Zoo)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Watch the Dubai Fountain Show (Runs every 30 mins: 6:00 PM - 11:00 PM)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Dhow Cruise dinner at Dubai Marina",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 2,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 2)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Old Dubai & Gold Souk (Taking Abra boat cross the creek)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Dubai's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Museum of the Future (Calligraphy Architecture)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Global Village Cultural Pavilions (Opens at 4:00 PM)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Dinner at Jumeirah Beach Residence (The Walk)",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 3,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 3)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "View from The Palm & Atlantis Park",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Dubai's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Ski Dubai Snow Park (Mall of the Emirates)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Dinner Cruise with skyline view",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Yacht Tour near Ain Dubai",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 4,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 4)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Visit Burj Khalifa Level 124/125 (Pre-booked)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Dubai's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Dubai Mall & Aquarium (Explore Underwater Zoo)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Watch the Dubai Fountain Show (Runs every 30 mins: 6:00 PM - 11:00 PM)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Dhow Cruise dinner at Dubai Marina",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 5,
+          "city": "Dubai",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Rove Downtown",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Modern, affordable hotel near Dubai Mall"
+            },
+            {
+              "name": "Hilton Dubai Al Habtoor City",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Stylish 5-star with canal views & multiple pools"
+            },
+            {
+              "name": "Address Downtown",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Iconic luxury tower overlooking Burj Khalifa & Fountain"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 5)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Old Dubai & Gold Souk (Taking Abra boat cross the creek)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Dubai's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Museum of the Future (Calligraphy Architecture)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Global Village Cultural Pavilions (Opens at 4:00 PM)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Dinner at Jumeirah Beach Residence (The Walk)",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        }
+      ],
+      "totalEstimatedCost": 250000,
+      "weatherContext": {
+        "Dubai": {
+          "temp": 23.44,
+          "condition": "broken clouds"
+        }
+      },
+      "savedAt": "2026-04-07T05:48:44.692Z"
+    }
+  ]
+}

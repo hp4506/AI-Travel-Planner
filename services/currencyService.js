@@ -148,6 +148,17 @@ const currencyMapping = {
     'rishikesh': { code: 'INR', symbol: '₹' },
     'agra': { code: 'INR', symbol: '₹' },
     'kerala': { code: 'INR', symbol: '₹' },
+    'daman': { code: 'INR', symbol: '₹' },
+    'diu': { code: 'INR', symbol: '₹' },
+    'silvassa': { code: 'INR', symbol: '₹' },
+    'pondicherry': { code: 'INR', symbol: '₹' },
+    'puducherry': { code: 'INR', symbol: '₹' },
+    'port blair': { code: 'INR', symbol: '₹' },
+    'leh': { code: 'INR', symbol: '₹' },
+    'ladakh': { code: 'INR', symbol: '₹' },
+    'srinagar': { code: 'INR', symbol: '₹' },
+    'manali': { code: 'INR', symbol: '₹' },
+    'shimla': { code: 'INR', symbol: '₹' },
     'india': { code: 'INR', symbol: '₹' },
 };
 

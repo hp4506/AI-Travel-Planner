@@ -6,6 +6,16 @@ dotenv.config();
 const genAI = new GoogleGenerativeAI(process.env.GENERATIVE_AI_API_KEY);
 
 // ─────────────────────────────────────────────
+// TIMEOUT UTILITY — prevents hanging HTTPS calls from blocking forever
+// ─────────────────────────────────────────────
+function withTimeout(promise, ms) {
+    return Promise.race([
+        promise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), ms))
+    ]);
+}
+
+// ─────────────────────────────────────────────
 // RESPONSE CACHE  (TTL: 2 hours, max 50 entries)
 // Prevents re-calling Gemini for identical inputs.
 // ─────────────────────────────────────────────
@@ -67,7 +77,7 @@ async function _callGemini(cacheKey, promptFn) {
         for (let attempt = 0; attempt <= maxRetries; attempt++) {
             try {
                 console.log(`[Gemini Request] Attempt ${attempt + 1}/${maxRetries + 1} using ${modelName}...`);
-                const result = await model.generateContent(promptFn());
+                const result = await withTimeout(model.generateContent(promptFn()), 15000);
                 const text   = result.response.text();
                 const clean  = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
                 const parsed = JSON.parse(clean);
@@ -77,7 +87,9 @@ async function _callGemini(cacheKey, promptFn) {
             } catch (err) {
                 const msg = err.message || '';
                 const isRetryable = msg.includes('429') || msg.includes('503') || msg.includes('500') || 
-                                   msg.includes('quota') || msg.includes('Too Many Requests') || msg.includes('high demand');
+                                   msg.includes('quota') || msg.includes('Too Many Requests') || msg.includes('high demand') ||
+                                   msg.includes('TIMEOUT') || msg.includes('ECONNREFUSED') || msg.includes('CERT') ||
+                                   msg.includes('ERR_TLS') || msg.includes('certificate');
 
                 if (isRetryable && attempt < maxRetries) {
                     const delay = (attempt + 1) * 2000; // 2s, 4s backoff for presentation speed
@@ -138,21 +150,41 @@ const COST_INDEX_MAP = {
 // ───── REALISM ENGINE: Multi-Day specific landmarks for common destinations ─────
 const CITY_REALISM_MAP = {
     'dubai': {
-        day1: { m: 'Visit Burj Khalifa Level 124/125 (Pre-booked)', a: 'Dubai Mall & Aquarium (Explore Underwater Zoo)', e: 'Watch the Dubai Fountain Show (Runs every 30 mins: 6:00 PM - 11:00 PM)', n: 'Dhow Cruise dinner at Dubai Marina', hotel: 'Address Downtown' },
-        day2: { m: 'Old Dubai & Gold Souk (Taking Abra boat cross the creek)', a: 'Museum of the Future (Calligraphy Architecture)', e: 'Global Village Cultural Pavilions (Opens at 4:00 PM)', n: 'Dinner at Jumeirah Beach Residence (The Walk)', hotel: 'Address Downtown' },
-        day3: { m: 'View from The Palm & Atlantis Park', a: 'Ski Dubai Snow Park (Mall of the Emirates)', e: 'Dinner Cruise with skyline view', n: 'Yacht Tour near Ain Dubai', hotel: 'Address Downtown' }
+        day1: { m: 'Visit Burj Khalifa Level 124/125 (Pre-booked)', a: 'Dubai Mall & Aquarium (Explore Underwater Zoo)', e: 'Watch the Dubai Fountain Show (Runs every 30 mins: 6:00 PM - 11:00 PM)', n: 'Dhow Cruise dinner at Dubai Marina' },
+        day2: { m: 'Old Dubai & Gold Souk (Taking Abra boat cross the creek)', a: 'Museum of the Future (Calligraphy Architecture)', e: 'Global Village Cultural Pavilions (Opens at 4:00 PM)', n: 'Dinner at Jumeirah Beach Residence (The Walk)' },
+        day3: { m: 'View from The Palm & Atlantis Park', a: 'Ski Dubai Snow Park (Mall of the Emirates)', e: 'Dinner Cruise with skyline view', n: 'Yacht Tour near Ain Dubai' },
+        hotels: [
+            { name: 'Rove Downtown', tier: 'Budget', desc: 'Modern, affordable hotel near Dubai Mall' },
+            { name: 'Hilton Dubai Al Habtoor City', tier: 'Mid-range', desc: 'Stylish 5-star with canal views & multiple pools' },
+            { name: 'Address Downtown', tier: 'Premium', desc: 'Iconic luxury tower overlooking Burj Khalifa & Fountain' }
+        ]
     },
     'mumbai': {
-        day1: { m: 'Gateway of India (Early morning lighting) & Elephanta Ferry', a: 'CSMT Station Heritage Walk', e: 'Marine Drive Sunset (The Queen\'s Necklace)', n: 'Late dinner at Colaba Social', hotel: 'The Taj Mahal Palace' },
-        day2: { m: 'Siddhivinayak Temple & Worli Sea Link Drive', a: 'Bandstand Promenade & Juhu Beach', e: 'Street food crawl at Chowpatty', n: 'Nightlife at Kamala Mills (Lower Parel)', hotel: 'The Taj Mahal Palace' }
+        day1: { m: 'Gateway of India (Early morning lighting) & Elephanta Ferry', a: 'CSMT Station Heritage Walk', e: 'Marine Drive Sunset (The Queen\'s Necklace)', n: 'Late dinner at Colaba Social' },
+        day2: { m: 'Siddhivinayak Temple & Worli Sea Link Drive', a: 'Bandstand Promenade & Juhu Beach', e: 'Street food crawl at Chowpatty', n: 'Nightlife at Kamala Mills (Lower Parel)' },
+        hotels: [
+            { name: 'Treebo Trend Blue Sea', tier: 'Budget', desc: 'Clean, reliable stay near Colaba Causeway' },
+            { name: 'ITC Maratha', tier: 'Mid-range', desc: 'Heritage-style luxury near the airport' },
+            { name: 'The Taj Mahal Palace', tier: 'Premium', desc: 'Iconic waterfront palace since 1903' }
+        ]
     },
     'delhi': {
-        day1: { m: 'Red Fort (Early hours) & Chandni Chowk Rikshaw ride', a: 'Qutub Minar & Lotus Temple', e: 'Red Fort Sound & Light Show (approx. 7:00 PM)', n: 'Dinner at Connaught Place', hotel: 'The Leela Palace' },
-        day2: { m: 'Humayun\'s Tomb (Persian Architecture) & Lodhi Garden', a: 'National Museum & Akshardham Water Show', e: 'India Gate War Memorial evening walk', n: 'Party at CyberHub Gurgaon', hotel: 'The Leela Palace' }
+        day1: { m: 'Red Fort (Early hours) & Chandni Chowk Rikshaw ride', a: 'Qutub Minar & Lotus Temple', e: 'Red Fort Sound & Light Show (approx. 7:00 PM)', n: 'Dinner at Connaught Place' },
+        day2: { m: 'Humayun\'s Tomb (Persian Architecture) & Lodhi Garden', a: 'National Museum & Akshardham Water Show', e: 'India Gate War Memorial evening walk', n: 'Party at CyberHub Gurgaon' },
+        hotels: [
+            { name: 'FabHotel Prime Connaught', tier: 'Budget', desc: 'Central location, walking distance to CP' },
+            { name: 'The Lalit New Delhi', tier: 'Mid-range', desc: 'Heritage hotel near India Gate' },
+            { name: 'The Leela Palace', tier: 'Premium', desc: 'Ultra-luxury with Lutyens Delhi views' }
+        ]
     },
     'paris': {
-        day1: { m: 'Eiffel Tower & Trocadero (Best photo spots)', a: 'Louvre Museum (Guided tour to Mona Lisa)', e: 'Seine River Cruise (Eiffel Tower Sparkle at top of every hour)', n: 'Stroll along Champs-Élysées', hotel: 'Hotel Pullman Paris' },
-        day2: { m: 'Montmartre & Sacré-Cœur (Artist square)', a: 'Musée d\'Orsay (Impressionist art)', e: 'Palais Garnier Opera House visit', n: 'Moulin Rouge cabaret show (Pre-booked)', hotel: 'Hotel Pullman Paris' }
+        day1: { m: 'Eiffel Tower & Trocadero (Best photo spots)', a: 'Louvre Museum (Guided tour to Mona Lisa)', e: 'Seine River Cruise (Eiffel Tower Sparkle at top of every hour)', n: 'Stroll along Champs-Élysées' },
+        day2: { m: 'Montmartre & Sacré-Cœur (Artist square)', a: 'Musée d\'Orsay (Impressionist art)', e: 'Palais Garnier Opera House visit', n: 'Moulin Rouge cabaret show (Pre-booked)' },
+        hotels: [
+            { name: 'Generator Paris', tier: 'Budget', desc: 'Trendy hostel-hotel near Canal Saint-Martin' },
+            { name: 'Hotel Pullman Paris', tier: 'Mid-range', desc: 'Modern 4-star near Eiffel Tower' },
+            { name: 'Le Meurice', tier: 'Premium', desc: 'Palace hotel on Rue de Rivoli facing Tuileries' }
+        ]
     }
 };
 
@@ -245,9 +277,24 @@ function _generateHeuristicItinerary(destinations, budget, days, currentLocation
             morning: (dayData?.m) || (prefOverride?.m) || genericVariations[dayIdx].m,
             afternoon: (dayData?.a) || (prefOverride?.a) || genericVariations[dayIdx].a,
             evening: (dayData?.e) || (prefOverride?.e) || genericVariations[dayIdx].e,
-            night: (dayData?.n) || genericVariations[dayIdx].n,
-            hotel: (dayData?.hotel) || ("The " + city + " Grand Hotel")
+            night: (dayData?.n) || genericVariations[dayIdx].n
         };
+
+        // Build hotel options array (3 tiers)
+        const cityHotels = cityMap?.hotels;
+        const hotelBudget = Math.round(dayAllocation * 0.4);
+        const hotelOptions = cityHotels
+            ? cityHotels.map(h => ({
+                name: h.name,
+                tier: h.tier,
+                estimatedCostPerNight: h.tier === 'Budget' ? Math.round(hotelBudget * 0.4) : h.tier === 'Mid-range' ? Math.round(hotelBudget * 0.75) : hotelBudget,
+                description: h.desc
+            }))
+            : [
+                { name: city + ' Inn & Suites', tier: 'Budget', estimatedCostPerNight: Math.round(hotelBudget * 0.4), description: 'Comfortable, affordable option in a central area.' },
+                { name: city + ' Plaza Hotel', tier: 'Mid-range', estimatedCostPerNight: Math.round(hotelBudget * 0.75), description: 'Well-rated hotel with modern amenities.' },
+                { name: 'The Grand ' + city, tier: 'Premium', estimatedCostPerNight: hotelBudget, description: 'Luxury stay with premium service and views.' }
+            ];
 
         const blocks = {
             "Morning": [
@@ -308,11 +355,8 @@ function _generateHeuristicItinerary(destinations, budget, days, currentLocation
         daysArr.push({
             day: i,
             city: city,
-            hotelSuggestion: isLastDay ? null : {
-                name: realism.hotel,
-                estimatedCostPerNight: Math.round(dayAllocation * 0.4),
-                description: "A highly rated, centrally located accommodation perfect for your stay."
-            },
+            hotelSuggestion: null,
+            hotelOptions: isLastDay ? [] : hotelOptions,
             blocks: blocks,
             dailyBudgetUsed: dayAllocation
         });
@@ -520,21 +564,54 @@ const generateItinerary = async (destinations, budget, days, currentLocation, al
 // STAGE 3: Dynamic Rebalancing Engine
 // ─────────────────────────────────────────────
 const rescheduleItinerary = async (remainingItinerary, missedActivity, remainingBudget, currentLocation) => {
-    const key = _cacheKey('reschedule', remainingItinerary, missedActivity, remainingBudget, currentLocation);
+    // Safe-guard inputs
+    const safeRemaining = Array.isArray(remainingItinerary) ? remainingItinerary : [];
+    const safeBudget = remainingBudget || 0;
+    const safeLocation = currentLocation || 'Unknown';
+
+    // 1. Prune the itinerary to avoid token bloat and confusion for the AI
+    const prunedItinerary = safeRemaining.map(day => ({
+        day: day.day,
+        city: day.city,
+        blocks: Object.fromEntries(
+            Object.entries(day.blocks || {}).map(([blockName, activities]) => [
+                blockName,
+                (activities || []).map(a => ({ place: a.place, time: a.time, category: a.category, description: a.description, cost: a.cost }))
+            ])
+        )
+    }));
+
+    // 2. EXCEPTION: Do not reschedule generic meals (Breakfast, Lunch, Dinner)
+    const missedName = (missedActivity.place || '').toLowerCase();
+    const isGenericMeal = (missedActivity.category === 'Food') && 
+                          (missedName.includes('breakfast') || missedName.includes('lunch') || missedName.includes('dinner')) &&
+                          !(missedName.includes('cruise') || missedName.includes('show') || missedName.includes('class') || missedName.includes('tour'));
+
+    if (isGenericMeal) {
+        console.log('[Reschedule] Skipping generic meal rescheduling.');
+        return { days: safeRemaining };
+    }
+
+    const key = _cacheKey('reschedule', prunedItinerary, missedActivity, safeBudget, safeLocation);
 
     const buildPrompt = () => `
-        RE-BALANCE ITINERARY (SMART CONTEXT-AWARE):
+        RE-BALANCE ITINERARY (SMART TIME-AWARE MOVEMENT):
         The user MISSED this activity: ${JSON.stringify(missedActivity)}.
-        Remaining Schedule: ${JSON.stringify(remainingItinerary)}.
-        Remaining Budget: ${remainingBudget} INR.
+        Remaining Schedule: ${JSON.stringify(prunedItinerary)}.
+        Remaining Budget: ${safeBudget} INR.
+        User Current Location: ${safeLocation}.
         
-        LOGIC:
-        1. CONTEXTUAL MOVEMENT: Identify the type of missed activity.
-           - If it contains "Sunset", "Fountain", "Evening Cruise", or "Dinner", prioritize moving it to an EVENING/NIGHT block on a subsequent day.
-           - If it contains "Sunrise", "Breakfast", or "Morning", prioritize moving it to a MORNING block.
-        2. SMART RE-BALANCING: Shift or shrink OTHER low-priority activities on the target day to make room for this missed "Must-See" activity.
-        3. Maintain original end dates and strict budget constraints.
-        4. No duplicate activities.
+        LOGIC & CONSTRAINTS:
+        1. MEAL EXCLUSION: 
+           - Generic meals (e.g., "Breakfast at Cafe", "Local Lunch", "Dinner") should NOT be rescheduled. If missed, they are simply gone.
+           - Exception: If the meal was part of an experience (e.g., "Dinner Cruise", "Food Tour"), then it SHOULD be rescheduled.
+        2. PERSISTENT TIME-OF-DAY CONSTRAINTS: 
+           - Some activities MUST happen at specific times of day (e.g., "Sunset", "Sunrise", "Night Market").
+           - If the missed activity is time-sensitive (includes "Sunset", "Sunrise", "Evening Show", "Fountain"), you MUST only move it to the SAME logical time block on a different day.
+        3. SMART RE-BALANCING: 
+           - Identify a low-priority or generic activity in the target day/block and replace or shrink it.
+           - If the missed activity is a "Must-See", it takes priority over shopping or generic cafe visits.
+        4. NO DURATION EXTENSION: The trip must end on the originally scheduled last day.
         
         CRITICAL: Return ONLY a valid JSON object. No markdown.
         Expected structure:
@@ -543,7 +620,12 @@ const rescheduleItinerary = async (remainingItinerary, missedActivity, remaining
                 {
                     "day": number,
                     "city": "Name",
-                    "blocks": { ... same as itinerary format ... },
+                    "blocks": { 
+                       "Morning": [ { "time": "HH:MM", "place": "...", "cost": number, "category": "...", "description": "...", "travelTimeFromPrevious": "..." } ],
+                       "Afternoon": [...],
+                       "Evening": [...],
+                       "Night": [...]
+                    },
                     "dailyBudgetUsed": number
                 }
             ]
@@ -553,31 +635,50 @@ const rescheduleItinerary = async (remainingItinerary, missedActivity, remaining
     try {
         return await _callGemini(key, buildPrompt);
     } catch (error) {
-        console.warn('[Gemini Reschedule] AI failed, using smart fallback:', error.message);
+        console.error('[Gemini Reschedule Error]', error.message);
+        console.log('[Gemini Reschedule] Falling back to Heuristic...');
         
-        // Smart Heuristic Fallback: 
-        // 1. Identify the logical block for the missed activity
-        let targetBlock = 'Evening';
-        const name = (missedActivity.place || '').toLowerCase();
-        if (name.includes('morning') || name.includes('sunrise') || name.includes('breakfast')) targetBlock = 'Morning';
-        else if (name.includes('lunch')) targetBlock = 'Afternoon';
-        else if (name.includes('night') || name.includes('club') || name.includes('bar')) targetBlock = 'Night';
+        // --- SMART HEURISTIC FALLBACK ---
+        const updated = JSON.parse(JSON.stringify(safeRemaining));
+        if (updated.length > 0) {
+            // Find the best block based on keywords
+            let targetBlock = 'Evening';
+            const name = (missedActivity.place || '').toLowerCase();
+            const desc = (missedActivity.description || '').toLowerCase();
+            const combined = name + ' ' + desc;
 
-        // 2. Clone the remaining itinerary and inject the missed activity into the NEXT day's logical block
-        const updated = JSON.parse(JSON.stringify(remainingItinerary));
-        if (updated.length > 1) {
-            const nextDay = updated[1]; // Try the day after the one where it was missed
-            if (!nextDay.blocks[targetBlock]) nextDay.blocks[targetBlock] = [];
+            if (combined.includes('morning') || combined.includes('sunrise') || combined.includes('breakfast')) targetBlock = 'Morning';
+            else if (combined.includes('lunch') || combined.includes('afternoon')) targetBlock = 'Afternoon';
+            else if (combined.includes('night') || combined.includes('club') || combined.includes('bar')) targetBlock = 'Night';
+            else if (combined.includes('sunset') || combined.includes('evening') || combined.includes('fountain') || combined.includes('dinner')) targetBlock = 'Evening';
+
+            // Try to move to the NEXT day if possible, else the current day's end
+            const targetDay = updated.length > 1 ? updated[1] : updated[0];
             
-            // Mark it as a rescheduled item in the description
-            const rescheduledItem = { ...missedActivity, description: `[RESCHEDULED] ${missedActivity.description || ''}` };
-            nextDay.blocks[targetBlock].push(rescheduledItem);
-            nextDay.dailyBudgetUsed = (nextDay.dailyBudgetUsed || 0) + (missedActivity.cost || 0);
+            if (targetDay && targetDay.blocks) {
+                if (!targetDay.blocks[targetBlock]) targetDay.blocks[targetBlock] = [];
+                
+                // Ensure we don't duplicate
+                const exists = targetDay.blocks[targetBlock].some(a => a.place === missedActivity.place);
+                if (!exists) {
+                    const desc = missedActivity.description || '';
+                    const cleanDesc = desc.includes('[RESCHEDULED]') ? desc : `[RESCHEDULED] ${desc}`;
+                    
+                    const rescheduledItem = { 
+                        ...missedActivity, 
+                        description: cleanDesc,
+                        // Assign a plausible time based on the block
+                        time: targetBlock === 'Morning' ? '10:30' : targetBlock === 'Afternoon' ? '15:30' : targetBlock === 'Evening' ? '19:00' : '22:00'
+                    };
+                    targetDay.blocks[targetBlock].push(rescheduledItem);
+                    targetDay.dailyBudgetUsed = (targetDay.dailyBudgetUsed || 0) + (missedActivity.cost || 0);
+                }
+            }
         }
-
         return { days: updated };
     }
 };
+
 
 // ─────────────────────────────────────────────
 // STAGE 4: Smart Budget Classifier
