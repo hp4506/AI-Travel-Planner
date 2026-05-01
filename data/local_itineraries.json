@@ -16,6 +16,1772 @@
   "T1goK1oovUP9ZirIJYAd1LSTYBg2": [
     {
       "feasible": true,
+      "message": "Budget looks good! Let's proceed. Your budget allows for a high-end experience in Tokyo with premium dining and comfortable accommodation.",
+      "intendedBudget": 245000,
+      "nearestAirport": "Sardar Vallabhbhai Patel International Airport (AMD)",
+      "nearestStation": "Anand Junction (ANND)",
+      "cityBreakdown": [
+        {
+          "city": "Tokyo",
+          "minFlights": 85000,
+          "minHotels": 80000,
+          "minFood": 45000,
+          "totalMin": 210000,
+          "allocationINR": 275000,
+          "localCurrency": {
+            "symbol": "¥",
+            "code": "JPY",
+            "rate": 1.6545,
+            "amount": 454987.5
+          }
+        }
+      ],
+      "alternatives": [
+        {
+          "city": "Singapore",
+          "reason": "Shorter flight duration from India and offers world-class nightlife and luxury relaxation within a similar budget."
+        },
+        {
+          "city": "Bangkok & Koh Samui",
+          "reason": "Superior value for money for luxury relaxation and nightlife, allowing for 5-star villas and private tours."
+        }
+      ],
+      "suggestions": [
+        "Given the short 4-day duration, book a direct flight or one with minimal layover from AMD to maximize your time.",
+        "Allocate a day for a luxury Hakone hot spring (Onsen) experience for the 'Relaxation' and 'Nature' preference.",
+        "Consider a Pasmo or Suica card for seamless transport, but use taxis at night for 'Nightlife' convenience in Roppongi or Shibuya.",
+        "Make advance reservations for high-end dining (Omakase) as popular spots in Tokyo book up weeks in advance."
+      ],
+      "input": {
+        "destinations": [
+          "tokyo"
+        ],
+        "budget": "275000",
+        "days": "4",
+        "currentLocation": "Mogri, India",
+        "daysPerCity": [],
+        "preferences": [
+          "Relaxation",
+          "Food",
+          "Nightlife",
+          "Nature"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "city": "tokyo",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "tokyo Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 11000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "tokyo Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 20625,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand tokyo",
+              "tier": "Premium",
+              "estimatedCostPerNight": 27500,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "04:00",
+                "place": "Departure from Mogri",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Start journey from home towards Sardar Vallabhbhai Patel International Airport (AMD).",
+                "travelTimeFromPrevious": "Initial departure"
+              },
+              {
+                "time": "06:00",
+                "place": "Arrival at Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Reach the hub and proceed to check-in/security.",
+                "travelTimeFromPrevious": "~1.5 - 2 hrs transit"
+              },
+              {
+                "time": "08:00",
+                "place": "Flight Departure: Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Commence the main leg of the journey to tokyo. (Arrival expected at 12:00)",
+                "travelTimeFromPrevious": "Check-in & Security"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "12:00",
+                "place": "Arrival and Check-in at tokyo",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Arrive at destination and settle into your accommodation.",
+                "travelTimeFromPrevious": "Journey time 4h"
+              },
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 6875,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 10313,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Fine Dining & Skyline View",
+                "cost": 13750,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 6875,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 68750
+        },
+        {
+          "day": 2,
+          "city": "tokyo",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "tokyo Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 11000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "tokyo Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 20625,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand tokyo",
+              "tier": "Premium",
+              "estimatedCostPerNight": 27500,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 2)",
+                "cost": 3438,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of tokyo's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 6875,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 10313,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Night Market & Street Food",
+                "cost": 13750,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 6875,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 68750
+        },
+        {
+          "day": 3,
+          "city": "tokyo",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "tokyo Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 11000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "tokyo Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 20625,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand tokyo",
+              "tier": "Premium",
+              "estimatedCostPerNight": 27500,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 3)",
+                "cost": 3438,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of tokyo's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 6875,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 10313,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Jazz Club or Local Lounge",
+                "cost": 13750,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 6875,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 68750
+        },
+        {
+          "day": 4,
+          "city": "tokyo",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "tokyo Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 11000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "tokyo Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 20625,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand tokyo",
+              "tier": "Premium",
+              "estimatedCostPerNight": 27500,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 4)",
+                "cost": 3438,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of tokyo's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 6875,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 10313,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Fine Dining & Skyline View",
+                "cost": 13750,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 6875,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 68750
+        }
+      ],
+      "totalEstimatedCost": 275000,
+      "weatherContext": {
+        "tokyo": {
+          "temp": 14.16,
+          "condition": "scattered clouds"
+        }
+      },
+      "savedAt": "2026-05-01T16:11:23.685Z"
+    },
+    {
+      "feasible": true,
+      "isFallback": true,
+      "message": "✅ Resilience Mode Active: Budget fits perfectly for a 4-day trip to Paris.",
+      "intendedBudget": 200000,
+      "cityBreakdown": [
+        {
+          "city": "Paris",
+          "minFlights": 5000,
+          "minHotels": 12000,
+          "minFood": 6000,
+          "totalMin": 10000,
+          "allocationINR": 200000,
+          "localCurrency": {
+            "symbol": "€",
+            "code": "EUR",
+            "rate": 0.008997,
+            "amount": 1799.3999999999999
+          }
+        }
+      ],
+      "alternatives": [],
+      "suggestions": [
+        "Resilience fallback: Your API keys might be hitting quotas, but we've verified your plan mathematically.",
+        "Book hotels in central areas to save on transit.",
+        "Consider a local food tour for authentic experiences."
+      ],
+      "nearestAirport": "Sardar Vallabhbhai Patel International Airport (AMD)",
+      "nearestStation": "Anand Junction (ANND)",
+      "input": {
+        "destinations": [
+          "Paris"
+        ],
+        "budget": "200000",
+        "days": "4",
+        "currentLocation": "Mogri, India",
+        "daysPerCity": [],
+        "preferences": [
+          "Relaxation",
+          "Food",
+          "Culture",
+          "Nightlife"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "city": "Paris",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Generator Paris",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Trendy hostel-hotel near Canal Saint-Martin"
+            },
+            {
+              "name": "Hotel Pullman Paris",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Modern 4-star near Eiffel Tower"
+            },
+            {
+              "name": "Le Meurice",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Palace hotel on Rue de Rivoli facing Tuileries"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "04:00",
+                "place": "Departure from Mogri",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Start journey from home towards Sardar Vallabhbhai Patel International Airport (AMD).",
+                "travelTimeFromPrevious": "Initial departure"
+              },
+              {
+                "time": "06:00",
+                "place": "Arrival at Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Reach the hub and proceed to check-in/security.",
+                "travelTimeFromPrevious": "~1.5 - 2 hrs transit"
+              },
+              {
+                "time": "08:00",
+                "place": "Flight Departure: Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Commence the main leg of the journey to Paris. (Arrival expected at 18:00)",
+                "travelTimeFromPrevious": "Check-in & Security"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "18:00",
+                "place": "Arrival and Check-in at Paris",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Arrive at destination and settle into your accommodation.",
+                "travelTimeFromPrevious": "Journey time 10h"
+              },
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Louvre Museum (Guided tour to Mona Lisa)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Seine River Cruise (Eiffel Tower Sparkle at top of every hour)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Stroll along Champs-Élysées",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 2,
+          "city": "Paris",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Generator Paris",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Trendy hostel-hotel near Canal Saint-Martin"
+            },
+            {
+              "name": "Hotel Pullman Paris",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Modern 4-star near Eiffel Tower"
+            },
+            {
+              "name": "Le Meurice",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Palace hotel on Rue de Rivoli facing Tuileries"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 2)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Montmartre & Sacré-Cœur (Artist square)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Paris's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Palais Garnier Opera House visit",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Moulin Rouge cabaret show (Pre-booked)",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 42500
+        },
+        {
+          "day": 3,
+          "city": "Paris",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Generator Paris",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Trendy hostel-hotel near Canal Saint-Martin"
+            },
+            {
+              "name": "Hotel Pullman Paris",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Modern 4-star near Eiffel Tower"
+            },
+            {
+              "name": "Le Meurice",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Palace hotel on Rue de Rivoli facing Tuileries"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 3)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Paris's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Jazz Club or Local Lounge",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              },
+              {
+                "time": "19:00",
+                "place": "Musée d'Orsay (Impressionist art)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "[RESCHEDULED] Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 57500
+        },
+        {
+          "day": 4,
+          "city": "Paris",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Generator Paris",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Trendy hostel-hotel near Canal Saint-Martin"
+            },
+            {
+              "name": "Hotel Pullman Paris",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Modern 4-star near Eiffel Tower"
+            },
+            {
+              "name": "Le Meurice",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Palace hotel on Rue de Rivoli facing Tuileries"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 4)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Eiffel Tower & Trocadero (Best photo spots)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Paris's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Louvre Museum (Guided tour to Mona Lisa)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Seine River Cruise (Eiffel Tower Sparkle at top of every hour)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Stroll along Champs-Élysées",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        }
+      ],
+      "totalEstimatedCost": 200000,
+      "weatherContext": {
+        "Paris": {
+          "temp": 25,
+          "condition": "broken clouds"
+        }
+      },
+      "savedAt": "2026-05-01T16:00:43.674Z"
+    },
+    {
+      "feasible": true,
+      "isFallback": true,
+      "message": "✅ Resilience Mode Active: Budget fits perfectly for a 4-day trip to Paris.",
+      "intendedBudget": 200000,
+      "cityBreakdown": [
+        {
+          "city": "Paris",
+          "minFlights": 5000,
+          "minHotels": 12000,
+          "minFood": 6000,
+          "totalMin": 10000,
+          "allocationINR": 200000,
+          "localCurrency": {
+            "symbol": "€",
+            "code": "EUR",
+            "rate": 0.008997,
+            "amount": 1799.3999999999999
+          }
+        }
+      ],
+      "alternatives": [],
+      "suggestions": [
+        "Resilience fallback: Your API keys might be hitting quotas, but we've verified your plan mathematically.",
+        "Book hotels in central areas to save on transit.",
+        "Consider a local food tour for authentic experiences."
+      ],
+      "nearestAirport": "Sardar Vallabhbhai Patel International Airport (AMD)",
+      "nearestStation": "Anand Junction (ANND)",
+      "input": {
+        "destinations": [
+          "Paris"
+        ],
+        "budget": "200000",
+        "days": "4",
+        "currentLocation": "Mogri, India",
+        "daysPerCity": [],
+        "preferences": [
+          "Relaxation",
+          "Food",
+          "Culture",
+          "Nightlife"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "city": "Paris",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Generator Paris",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Trendy hostel-hotel near Canal Saint-Martin"
+            },
+            {
+              "name": "Hotel Pullman Paris",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Modern 4-star near Eiffel Tower"
+            },
+            {
+              "name": "Le Meurice",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Palace hotel on Rue de Rivoli facing Tuileries"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "04:00",
+                "place": "Departure from Mogri",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Start journey from home towards Sardar Vallabhbhai Patel International Airport (AMD).",
+                "travelTimeFromPrevious": "Initial departure"
+              },
+              {
+                "time": "06:00",
+                "place": "Arrival at Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Reach the hub and proceed to check-in/security.",
+                "travelTimeFromPrevious": "~1.5 - 2 hrs transit"
+              },
+              {
+                "time": "08:00",
+                "place": "Flight Departure: Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Commence the main leg of the journey to Paris. (Arrival expected at 18:00)",
+                "travelTimeFromPrevious": "Check-in & Security"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "18:00",
+                "place": "Arrival and Check-in at Paris",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Arrive at destination and settle into your accommodation.",
+                "travelTimeFromPrevious": "Journey time 10h"
+              },
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Louvre Museum (Guided tour to Mona Lisa)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Seine River Cruise (Eiffel Tower Sparkle at top of every hour)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Stroll along Champs-Élysées",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 2,
+          "city": "Paris",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Generator Paris",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Trendy hostel-hotel near Canal Saint-Martin"
+            },
+            {
+              "name": "Hotel Pullman Paris",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Modern 4-star near Eiffel Tower"
+            },
+            {
+              "name": "Le Meurice",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Palace hotel on Rue de Rivoli facing Tuileries"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 2)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Montmartre & Sacré-Cœur (Artist square)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Paris's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Musée d'Orsay (Impressionist art)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Palais Garnier Opera House visit",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Moulin Rouge cabaret show (Pre-booked)",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 3,
+          "city": "Paris",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Generator Paris",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Trendy hostel-hotel near Canal Saint-Martin"
+            },
+            {
+              "name": "Hotel Pullman Paris",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Modern 4-star near Eiffel Tower"
+            },
+            {
+              "name": "Le Meurice",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Palace hotel on Rue de Rivoli facing Tuileries"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 3)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Paris's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Jazz Club or Local Lounge",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        },
+        {
+          "day": 4,
+          "city": "Paris",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Generator Paris",
+              "tier": "Budget",
+              "estimatedCostPerNight": 8000,
+              "description": "Trendy hostel-hotel near Canal Saint-Martin"
+            },
+            {
+              "name": "Hotel Pullman Paris",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 15000,
+              "description": "Modern 4-star near Eiffel Tower"
+            },
+            {
+              "name": "Le Meurice",
+              "tier": "Premium",
+              "estimatedCostPerNight": 20000,
+              "description": "Palace hotel on Rue de Rivoli facing Tuileries"
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 4)",
+                "cost": 2500,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Eiffel Tower & Trocadero (Best photo spots)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Paris's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 5000,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Louvre Museum (Guided tour to Mona Lisa)",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Seine River Cruise (Eiffel Tower Sparkle at top of every hour)",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Stroll along Champs-Élysées",
+                "cost": 10000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 5000,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 50000
+        }
+      ],
+      "totalEstimatedCost": 200000,
+      "weatherContext": {
+        "Paris": {
+          "temp": 25,
+          "condition": "broken clouds"
+        }
+      },
+      "savedAt": "2026-05-01T15:59:14.762Z"
+    },
+    {
+      "feasible": true,
+      "isFallback": true,
+      "message": "✅ Resilience Mode Active: Budget fits perfectly for a 4-day trip to Bali.",
+      "intendedBudget": 300000,
+      "cityBreakdown": [
+        {
+          "city": "Bali",
+          "minFlights": 5000,
+          "minHotels": 12000,
+          "minFood": 6000,
+          "totalMin": 10000,
+          "allocationINR": 300000,
+          "localCurrency": {
+            "symbol": "Rp",
+            "code": "IDR",
+            "rate": 182.2862,
+            "amount": 54685860
+          }
+        }
+      ],
+      "alternatives": [],
+      "suggestions": [
+        "Resilience fallback: Your API keys might be hitting quotas, but we've verified your plan mathematically.",
+        "Book hotels in central areas to save on transit.",
+        "Consider a local food tour for authentic experiences."
+      ],
+      "nearestAirport": "Sardar Vallabhbhai Patel International Airport (AMD)",
+      "nearestStation": "Anand Junction (ANND)",
+      "input": {
+        "destinations": [
+          "Bali"
+        ],
+        "budget": "300000",
+        "days": "4",
+        "currentLocation": "Mogri, India",
+        "daysPerCity": [],
+        "preferences": [
+          "Relaxation",
+          "Food",
+          "Culture",
+          "Nightlife",
+          "Nature"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "city": "Bali",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bali Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 12000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bali Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 22500,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bali",
+              "tier": "Premium",
+              "estimatedCostPerNight": 30000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "06:00",
+                "place": "Departure from Mogri",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Start journey from home towards Sardar Vallabhbhai Patel International Airport (AMD).",
+                "travelTimeFromPrevious": "Initial departure"
+              },
+              {
+                "time": "08:00",
+                "place": "Arrival at Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Reach the hub and proceed to check-in/security.",
+                "travelTimeFromPrevious": "~1.5 - 2 hrs transit"
+              },
+              {
+                "time": "10:00",
+                "place": "Flight Departure: Sardar Vallabhbhai Patel International Airport (AMD)",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Commence the main leg of the journey to Bali. (Arrival expected at 14:00)",
+                "travelTimeFromPrevious": "Check-in & Security"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "14:00",
+                "place": "Arrival and Check-in at Bali",
+                "cost": 0,
+                "category": "Transport",
+                "description": "Arrive at destination and settle into your accommodation.",
+                "travelTimeFromPrevious": "Journey time 4-6 hrs"
+              },
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 7500,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 11250,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Fine Dining & Skyline View",
+                "cost": 15000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 75000
+        },
+        {
+          "day": 2,
+          "city": "Bali",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bali Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 12000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bali Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 22500,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bali",
+              "tier": "Premium",
+              "estimatedCostPerNight": 30000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 2)",
+                "cost": 3750,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Bali's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 7500,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 11250,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Night Market & Street Food",
+                "cost": 15000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 75000
+        },
+        {
+          "day": 3,
+          "city": "Bali",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bali Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 12000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bali Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 22500,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bali",
+              "tier": "Premium",
+              "estimatedCostPerNight": 30000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 3)",
+                "cost": 3750,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Bali's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 7500,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 11250,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Jazz Club or Local Lounge",
+                "cost": 15000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 75000
+        },
+        {
+          "day": 4,
+          "city": "Bali",
+          "hotelSuggestion": null,
+          "hotelOptions": [
+            {
+              "name": "Bali Inn & Suites",
+              "tier": "Budget",
+              "estimatedCostPerNight": 12000,
+              "description": "Comfortable, affordable option in a central area."
+            },
+            {
+              "name": "Bali Plaza Hotel",
+              "tier": "Mid-range",
+              "estimatedCostPerNight": 22500,
+              "description": "Well-rated hotel with modern amenities."
+            },
+            {
+              "name": "The Grand Bali",
+              "tier": "Premium",
+              "estimatedCostPerNight": 30000,
+              "description": "Luxury stay with premium service and views."
+            }
+          ],
+          "blocks": {
+            "Morning": [
+              {
+                "time": "08:00",
+                "place": "Local Breakfast Spot (Day 4)",
+                "cost": 3750,
+                "category": "Food",
+                "description": "Start your day with a fresh, local breakfast.",
+                "travelTimeFromPrevious": "5-10 mins"
+              },
+              {
+                "time": "10:00",
+                "place": "Spa & Wellness Session",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Professional-led discovery of Bali's most famous sites.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Afternoon": [
+              {
+                "time": "13:00",
+                "place": "Recommended Local Bistro",
+                "cost": 7500,
+                "category": "Food",
+                "description": "Authentic regional lunch experience.",
+                "travelTimeFromPrevious": "20 mins"
+              },
+              {
+                "time": "15:00",
+                "place": "Botanical Garden / Beach Club",
+                "cost": 11250,
+                "category": "Activity",
+                "description": "Immerse yourself in the local heritage and history.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ],
+            "Evening": [
+              {
+                "time": "18:00",
+                "place": "Private Sunset Cruise",
+                "cost": 0,
+                "category": "Activity",
+                "description": "Curated evening experience highlight.",
+                "travelTimeFromPrevious": "25 mins"
+              },
+              {
+                "time": "20:00",
+                "place": "Fine Dining & Skyline View",
+                "cost": 15000,
+                "category": "Food",
+                "description": "Premium dining featuring local specialties.",
+                "travelTimeFromPrevious": "10 mins"
+              }
+            ],
+            "Night": [
+              {
+                "time": "22:00",
+                "place": "City Skyline Lounge",
+                "cost": 7500,
+                "category": "Activity",
+                "description": "Relax with a nightcap overlooking the iconic city view.",
+                "travelTimeFromPrevious": "15 mins"
+              }
+            ]
+          },
+          "dailyBudgetUsed": 75000
+        }
+      ],
+      "totalEstimatedCost": 300000,
+      "weatherContext": {
+        "Bali": {
+          "temp": 25.63,
+          "condition": "scattered clouds"
+        }
+      },
+      "savedAt": "2026-05-01T15:51:20.670Z"
+    },
+    {
+      "feasible": true,
       "isFallback": true,
       "message": "✅ Resilience Mode Active: Budget fits perfectly for a 3-day trip to Bangkok.",
       "intendedBudget": 150000,

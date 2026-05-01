@@ -3,7 +3,14 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const genAI = new GoogleGenerativeAI(process.env.GENERATIVE_AI_API_KEY);
+// We initialize this lazily to ensure environment variables are loaded
+let genAI = null;
+function getGenAI() {
+    const apiKey = process.env.GENERATIVE_AI_API_KEY;
+    if (!apiKey || apiKey.trim() === '' || apiKey === 'YOUR_API_KEY_HERE') return null;
+    if (!genAI) genAI = new GoogleGenerativeAI(apiKey);
+    return genAI;
+}
 
 // ─────────────────────────────────────────────
 // TIMEOUT UTILITY — prevents hanging HTTPS calls from blocking forever
@@ -53,31 +60,26 @@ async function _callGemini(cacheKey, promptFn) {
         return cached;
     }
 
-    // --- PRESENTATION FORTIFICATION ---
-    // If the API key is missing or blank, don't even try. 
-    // This prevents delay and SDK errors during a live presentation.
-    const apiKey = process.env.GENERATIVE_AI_API_KEY;
-    if (!apiKey || apiKey.trim() === '' || apiKey === 'YOUR_API_KEY_HERE') {
+    const ai = getGenAI();
+    if (!ai) {
         console.error('[Gemini Warning] No valid API key found. Entering 100% Heuristic Mode for Stability.');
         throw new Error('AI_UNAVAILABLE');
     }
 
     // List of models to try in order of preference
     const MODELS = [
-        'gemini-1.5-flash-latest', 
-        'gemini-1.5-flash', 
-        'gemini-1.5-pro-latest', 
-        'gemini-pro'
+        'gemini-flash-latest'
     ];
 
+    let lastError = null;
     for (const modelName of MODELS) {
-        const model = genAI.getGenerativeModel({ model: modelName });
-        const maxRetries = 2;
+        const model = ai.getGenerativeModel({ model: modelName });
+        const maxRetries = 1; // Reduced retries for faster model rotation
 
         for (let attempt = 0; attempt <= maxRetries; attempt++) {
             try {
                 console.log(`[Gemini Request] Attempt ${attempt + 1}/${maxRetries + 1} using ${modelName}...`);
-                const result = await withTimeout(model.generateContent(promptFn()), 15000);
+                const result = await withTimeout(model.generateContent(promptFn()), 20000);
                 const text   = result.response.text();
                 const clean  = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
                 const parsed = JSON.parse(clean);
@@ -85,25 +87,27 @@ async function _callGemini(cacheKey, promptFn) {
                 _setCached(cacheKey, parsed);
                 return parsed;
             } catch (err) {
+                lastError = err;
                 const msg = err.message || '';
+                console.warn(`[Gemini Error] ${modelName} attempt ${attempt + 1} failed:`, msg);
+
                 const isRetryable = msg.includes('429') || msg.includes('503') || msg.includes('500') || 
                                    msg.includes('quota') || msg.includes('Too Many Requests') || msg.includes('high demand') ||
                                    msg.includes('TIMEOUT') || msg.includes('ECONNREFUSED') || msg.includes('CERT') ||
                                    msg.includes('ERR_TLS') || msg.includes('certificate');
 
                 if (isRetryable && attempt < maxRetries) {
-                    const delay = (attempt + 1) * 2000; // 2s, 4s backoff for presentation speed
-                    console.warn(`[Gemini Error] ${modelName} busy/quota hit. Retrying in ${delay / 1000}s...`);
+                    const delay = 2000;
                     await new Promise(r => setTimeout(r, delay));
                 } else {
-                    console.warn(`[Gemini Error] ${modelName} failed. ${attempt < maxRetries ? 'Stopping model attempts.' : 'Trying next model...'}`);
-                    break; // Exit the retry loop for this model and try next model in outer loop
+                    break; // Try next model
                 }
             }
         }
     }
 
     // If we reach here, ALL models failed. 
+    console.error('[Gemini Critical] All models failed. Last error:', lastError?.message || lastError);
     throw new Error('AI_UNAVAILABLE');
 }
 
@@ -244,12 +248,58 @@ function _getSmartHub(location, mode) {
     return cityBase + " Transit Point";
 }
 
+// ─────────────────────────────────────────────
+// TIME UTILITIES
+// ─────────────────────────────────────────────
+function _calculateDuration(start, end) {
+    if (!start || !end) return "Unknown duration";
+    const [sH, sM] = start.split(':').map(Number);
+    const [eH, eM] = end.split(':').map(Number);
+    let diff = (eH * 60 + eM) - (sH * 60 + sM);
+    if (diff < 0) diff += 24 * 60; // Handle overnight
+    const hrs = Math.floor(diff / 60);
+    const mins = diff % 60;
+    return mins > 0 ? `${hrs}h ${mins}m` : `${hrs}h`;
+}
+
+function _addDuration(time, durationHrs) {
+    if (!time) return "12:00";
+    const [h, m] = time.split(':').map(Number);
+    let newH = Math.floor(h + durationHrs);
+    const newM = m; 
+    newH = newH % 24;
+    return `${newH.toString().padStart(2, '0')}:${newM.toString().padStart(2, '0')}`;
+}
+
+function _getTimeBlock(time) {
+    if (!time) return 'Afternoon';
+    const hour = parseInt(time.split(':')[0]);
+    if (isNaN(hour)) return 'Afternoon';
+    if (hour < 12) return 'Morning';
+    if (hour < 17) return 'Afternoon';
+    if (hour < 21) return 'Evening';
+    return 'Night';
+}
+
 function _generateHeuristicItinerary(destinations, budget, days, currentLocation, allocation, transportDetails = null, homeHub = null, preferences = []) {
     const daysArr = [];
-    const cities = destinations;
     const mode = transportDetails?.mode || 'Flight';
     const depTime = transportDetails?.departureTime || '09:00';
-    const arrTime = transportDetails?.arrivalTime || '18:00';
+    
+    // Heuristic: Estimate duration based on simple rules
+    let durationHrs = 4;
+    const destLower = destinations[0].toLowerCase();
+    const currLower = currentLocation.toLowerCase();
+    
+    if (destLower.includes('bali') || destLower.includes('tokyo') || destLower.includes('japan') || destLower.includes('europe') || destLower.includes('paris') || destLower.includes('london') || destLower.includes('usa') || destLower.includes('nyc')) {
+        durationHrs = 12;
+    } else if (destLower.includes('dubai') || destLower.includes('singapore') || destLower.includes('bangkok') || destLower.includes('malaysia')) {
+        durationHrs = 6;
+    }
+    
+    const arrTime = transportDetails?.arrivalTime || _addDuration(depTime, durationHrs);
+    const journeyDuration = _calculateDuration(depTime, arrTime);
+    const cities = destinations;
     
     for (let i = 1; i <= days; i++) {
         const isFirstDay = (i === 1);
@@ -341,7 +391,8 @@ function _generateHeuristicItinerary(destinations, budget, days, currentLocation
                     { "time": depTime, "place": "Departure from " + hubName, "cost": 0, "category": "Transport", "description": "Commence journey via " + mode + " to " + city + ". (Arrival expected at " + arrTime + ")", "travelTimeFromPrevious": "Check-in 2hrs prior" }
                 ];
             }
-            blocks.Afternoon.unshift({ "time": arrTime, "place": "Arrival and Check-in at " + city, "cost": 0, "category": "Transport", "description": "Arrive at destination and settle into your accommodation.", "travelTimeFromPrevious": "Journey time 4-6 hrs" });
+            const targetBlock = _getTimeBlock(arrTime);
+            blocks[targetBlock].unshift({ "time": arrTime, "place": "Arrival and Check-in at " + city, "cost": 0, "category": "Transport", "description": "Arrive at destination and settle into your accommodation.", "travelTimeFromPrevious": "Journey duration: " + journeyDuration });
         }
 
         // Override Last Day Evening with Return Travel
@@ -507,10 +558,19 @@ const generateItinerary = async (destinations, budget, days, currentLocation, al
     const transportContext = transportDetails
         ? `TRANSPORT MODE: ${transportDetails.mode}. 
            OUTBOUND DEPARTURE FROM ${currentLocation}: ${transportDetails.departureTime || 'Not specified'}.
-           OUTBOUND ARRIVAL AT ${destinations[0]}: ${transportDetails.arrivalTime || 'Not specified'}.
            RETURN DEPARTURE FROM ${destinations[destinations.length-1]}: ${transportDetails.returnDepartureTime || 'Not specified'}.
-           RETURN ARRIVAL AT HOME (${currentLocation}): ${transportDetails.returnArrivalTime || 'Not specified'}.`
-        : `TRANSPORT MODE: Assuming Flight. Departure/Arrival times not specified.`;
+           
+           CRITICAL: The user has ONLY provided departure times. You MUST calculate/estimate the arrival times based on a realistic distance from ${currentLocation} to ${destinations[0]} and back. 
+           For example:
+           - Ahmedabad (AMD) to Tokyo (NRT/HND): ~11-14 hours duration.
+           - Ahmedabad (AMD) to Bali (DPS): ~10-12 hours duration.
+           - Mumbai (BOM) to London (LHR): ~10-11 hours duration.
+           - Domestic (India): ~2-3 hours for flights, 12-24 hours for trains.
+           
+           DO NOT use generic 4-6 hour durations for long-haul international trips. If the journey is long (e.g. India to Japan), the first day may only have one evening activity after arrival.
+           
+           Also, ensure 'travelTimeFromPrevious' between activities within a city is realistic (e.g. 30-60 mins for large cities).`
+        : `TRANSPORT MODE: Assuming Flight. Departure/Arrival times not specified. CRITICAL: Estimate realistic transit durations based on distance.`;
 
     const buildPrompt = () => `
         Generate a detailed, time-blocked itinerary for a ${days}-day trip to ${destinations.join(', ')}.
